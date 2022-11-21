@@ -18,6 +18,6 @@ from django.urls import path
 from lessons import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("sign_up/", views.sign_up, name="sign_up"),
+    path("admin/", admin.site.urls),
+    path("signup/", views.sign_up, name="sign_up"),
 ]

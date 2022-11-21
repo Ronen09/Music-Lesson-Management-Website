@@ -1,5 +1,15 @@
 from django.shortcuts import render
 
+from lessons.forms import SignUpForm
+
 # Create your views here.
 def sign_up(request):
-    return render(request, "sign_up.html")
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+    else:
+        form = SignUpForm()
+
+    return render(request, "sign_up.html", {"form": form})
