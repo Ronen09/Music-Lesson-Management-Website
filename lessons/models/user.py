@@ -9,6 +9,9 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
 
     username = None
+
+    is_student = models.BooleanField(default=False)
+
     REQUIRED_FIELDS = []
 
     objects = UserManager()
