@@ -20,4 +20,5 @@ from lessons import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("signup/", views.sign_up, name="sign_up"),
+    path("login/", views.log_in, name="log_in"),
 ]
