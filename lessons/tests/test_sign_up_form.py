@@ -61,3 +61,11 @@ class TestSignUpForm(TestCase):
         is_password_correct = check_password("Password123", user.password)
 
         self.assertTrue(is_password_correct)
+
+    def test_form_creates_student_user(self):
+        form = SignUpForm(data=self.form_input)
+        form.save()
+
+        user = User.objects.get(email="johndoe@example.org")
+
+        self.assertTrue(user.is_student)
