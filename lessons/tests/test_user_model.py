@@ -26,7 +26,7 @@ class TestUserModel(TestCase):
         self._assert_user_is_invalid()
 
     def test_is_student_is_false_by_default(self):
-        self.assertEqual(self.user.is_student, False)
+        self.assertFalse(self.user.is_student)
 
     def _assert_user_is_valid(self):
         try:
