@@ -31,6 +31,7 @@ class SignUpForm(forms.ModelForm):
         user = User.objects.create_user(
             self.cleaned_data.get("email"),
             password=self.cleaned_data.get("new_password"),
+            is_student=True,  # Any user created via sign up form should be a student
         )
 
         return user
