@@ -3,7 +3,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from lessons.models.lesson_request import LessonRequest
+from lessons.models import LessonRequest
 
 
 class TestLessonRequest(TestCase):
