@@ -10,6 +10,8 @@ class TestSignUpForm(TestCase):
     def setUp(self):
         self.form_input = {
             "email": "johndoe@example.org",
+            "first_name": "John",
+            "last_name": "Doe",
             "new_password": "Password123",
             "password_confirmation": "Password123",
         }
@@ -21,6 +23,9 @@ class TestSignUpForm(TestCase):
 
     def test_form_has_necessary_fields(self):
         form = SignUpForm()
+
+        self.assertIn("first_name", form.fields)
+        self.assertIn("last_name", form.fields)
 
         self.assertIn("email", form.fields)
         email_field = form.fields["email"]
@@ -68,4 +73,6 @@ class TestSignUpForm(TestCase):
 
         user = User.objects.get(email="johndoe@example.org")
 
+        self.assertEqual(user.first_name, "John")
+        self.assertEqual(user.last_name, "Doe")
         self.assertTrue(user.is_student)
