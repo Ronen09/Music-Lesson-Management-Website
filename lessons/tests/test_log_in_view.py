@@ -4,9 +4,10 @@ from django.contrib import messages
 
 from lessons.forms import LogInForm
 from lessons.models import User
+from lessons.tests.helpers import Helper
 
 
-class LogInViewTestCase(TestCase):
+class LogInViewTestCase(TestCase, Helper):
     def setUp(self):
         self.url = reverse("log_in")
 
@@ -128,6 +129,3 @@ class LogInViewTestCase(TestCase):
 
         self.assertEqual(len(messages_list), 1)
         self.assertEqual(messages_list[0].level, messages.ERROR)
-
-    def _is_logged_in(self):
-        return "_auth_user_id" in self.client.session.keys()
