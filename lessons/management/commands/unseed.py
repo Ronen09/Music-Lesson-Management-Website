@@ -1,6 +1,16 @@
 from django.core.management.base import BaseCommand, CommandError
 
+from lessons.models.user import User
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print("The unseed command has not been implemented yet!")
-        print("TO DO: Create an unseed command following the instructions of the assignment carefully.")
+        print("Unseeding initial data...")
+
+        try:
+            # We use `filter` instead of `get` so there are no errors if the users don't exist yet.
+            User.objects.filter(is_superuser=False).delete()
+        except:
+            raise CommandError("Unable to unseed initial data.")
+
+        print("Initial data unseeded.")
