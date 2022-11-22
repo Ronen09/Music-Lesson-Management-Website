@@ -6,7 +6,7 @@ from lessons.models import User
 class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["email"]
+        fields = ["email", "first_name", "last_name"]
 
     new_password = forms.CharField(label="New password", widget=forms.PasswordInput())
 
@@ -31,6 +31,8 @@ class SignUpForm(forms.ModelForm):
         user = User.objects.create_user(
             self.cleaned_data.get("email"),
             password=self.cleaned_data.get("new_password"),
+            first_name=self.cleaned_data.get("first_name"),
+            last_name=self.cleaned_data.get("last_name"),
             is_student=True,  # Any user created via sign up form should be a student
         )
 
