@@ -2,10 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
 
-from lessons.forms import SignUpForm, LogInForm
-from lessons.models import User
+from lessons.forms import SignUpForm, LogInForm, LessonRequestForm
 
 # Create your views here.
 def sign_up(request):
@@ -52,6 +50,10 @@ def log_out(request):
     logout(request)
 
     return redirect("home")
+
+
+def lesson_request(request):
+    return render(request, "lesson_request.html")
 
 
 def home(request):
