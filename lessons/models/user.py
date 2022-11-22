@@ -10,7 +10,7 @@ class User(AbstractUser):
 
     username = None
 
-    is_student = models.BooleanField(default=False)
+    role = models.CharField(default="Student", max_length=255)
 
     REQUIRED_FIELDS = []
 

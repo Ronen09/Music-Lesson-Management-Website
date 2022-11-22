@@ -33,7 +33,7 @@ class SignUpForm(forms.ModelForm):
             password=self.cleaned_data.get("new_password"),
             first_name=self.cleaned_data.get("first_name"),
             last_name=self.cleaned_data.get("last_name"),
-            is_student=True,  # Any user created via sign up form should be a student
+            role="Student",  # Any user created via sign up form should be a student
         )
 
         return user

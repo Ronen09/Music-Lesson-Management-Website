@@ -75,4 +75,4 @@ class TestSignUpForm(TestCase):
 
         self.assertEqual(user.first_name, "John")
         self.assertEqual(user.last_name, "Doe")
-        self.assertTrue(user.is_student)
+        self.assertEqual(user.role, "Student")
