@@ -3,16 +3,24 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from lessons.models import LessonRequest
+from lessons.models import LessonRequest, User
 
 
 class TestLessonRequest(TestCase):
     def setUp(self):
+        self.user = User.objects.create_user(
+            "john.doe@example.org",
+            "Password123",
+            first_name="John",
+            last_name="Doe",
+            role="Student",
+        )
         self.lesson_request = LessonRequest.objects.create(
             no_of_lessons=5,
             lesson_interval_in_days=7,
             lesson_duration_in_mins=30,
             further_information="I would prefer teacher X.",
+            user=self.user,
         )
 
     def test_valid_lesson_request(self):
