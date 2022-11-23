@@ -2,7 +2,7 @@
 {% block title %}Lesson request{% endblock %}
 {% block body %}
 <h1>Lesson request</h1>
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user.role == 'Student' %}
 <form action = "{% url 'lesson_request' %}" method = "post">
 	{% csrf_token %}
 	{% include 'partials/form.html' with form=form %}
