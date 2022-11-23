@@ -54,14 +54,14 @@ def log_out(request):
 
 def lesson_request(request):
     if request.method == "POST":
-        form = LessonRequestForm(request.POST)
+        form = LessonRequestForm(request.POST, current_user=request.user)
 
         if form.is_valid():
-            lesson_request = form.save()
+            form.save()
 
             return redirect("home")
     else:
-        form = LessonRequestForm()
+        form = LessonRequestForm(current_user=request.user)
 
     return render(request, "lesson_request.html", {"form": form})
 
