@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Lesson request{% endblock %}
+{% block title %}
+Lesson request
+{% endblock %}
 {% block body %}
 <h1>Lesson request</h1>
-{% if user.is_authenticated and user.role == 'Student' %}
 <form action = "{% url 'lesson_request' %}" method = "post">
 	{% csrf_token %}
 	{% include 'partials/form.html' with form=form %}
@@ -11,7 +12,4 @@
 
 	<input type = "submit" value = "Request lesson" class = "btn btn-primary">
 </form>
-{% else %}
-<p>You do not have permission to view this page. Please <a href="{% url 'log_in' %}">log in</a> as a student user.</p>
-{% endif %}
 {% endblock %}

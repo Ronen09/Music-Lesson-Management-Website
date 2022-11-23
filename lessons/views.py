@@ -19,7 +19,9 @@ def sign_up(request):
     else:
         form = SignUpForm()
 
-    return render(request, "sign_up.html", {"form": form})
+    return render(
+        request, "sign_up.html", {"form": form, "allowed_roles": ["Anonymous"]}
+    )
 
 
 def log_in(request):
@@ -43,7 +45,9 @@ def log_in(request):
 
     form = LogInForm()
 
-    return render(request, "log_in.html", {"form": form})
+    return render(
+        request, "log_in.html", {"form": form, "allowed_roles": ["Anonymous"]}
+    )
 
 
 def log_out(request):
@@ -63,8 +67,10 @@ def lesson_request(request):
     else:
         form = LessonRequestForm(current_user=request.user)
 
-    return render(request, "lesson_request.html", {"form": form})
+    return render(
+        request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]}
+    )
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "home.html", {"allowed_roles": ["Anonymous"]})
