@@ -51,6 +51,7 @@ class LessonRequestForm(forms.ModelForm):
             lesson_interval_in_days=self.cleaned_data.get("lesson_interval_in_days"),
             lesson_duration_in_mins=self.cleaned_data.get("lesson_duration_in_mins"),
             further_information=self.cleaned_data.get("further_information"),
+            user=self.current_user,
         )
 
         return lesson_request
