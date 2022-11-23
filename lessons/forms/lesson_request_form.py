@@ -18,8 +18,8 @@ class LessonRequestForm(forms.ModelForm):
             "further_information",
         ]
 
-    def __init__(self, current_user, *args, **kwargs):
-        self.current_user = current_user
+    def __init__(self, *args, **kwargs):
+        self.current_user = kwargs.pop("current_user", None)
         super(LessonRequestForm, self).__init__(*args, **kwargs)
 
     def clean(self):
