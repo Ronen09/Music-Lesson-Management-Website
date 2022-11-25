@@ -6,24 +6,6 @@ from django.contrib.auth import authenticate, login, logout
 from lessons.forms import SignUpForm, LogInForm, LessonRequestForm
 
 # Create your views here.
-def sign_up(request):
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-
-        if form.is_valid():
-            user = form.save()
-
-            login(request, user)
-
-            return redirect("home")
-    else:
-        form = SignUpForm()
-
-    return render(
-        request, "sign_up.html", {"form": form, "allowed_roles": ["Anonymous"]}
-    )
-
-
 def log_out(request):
     logout(request)
 
@@ -75,6 +57,26 @@ def log_in(request):
 
     return render(
         request, "log_in.html", {"form": form, "allowed_roles": ["Anonymous"]}
+    )
+
+def sign_up(request):
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            login(request, user)
+
+            # Redirect user to appropriate user dashboard
+            if (user.role == "Student"): return redirect("student")
+            elif (user.role == "Administrator"): return redirect("administrator")
+            elif (user.role == "Director"): return redirect("director")
+    else:
+        form = SignUpForm()
+
+    return render(
+        request, "sign_up.html", {"form": form, "allowed_roles": ["Anonymous"]}
     )
 
 def student(request):

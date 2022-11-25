@@ -1,13 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'site_base.html' %}
 {% block title %}Sign up{% endblock %}
-{% block body %}
-<h1>Sign up</h1>
-<form action = "{% url 'sign_up' %}" method = "post">
-	{% csrf_token %}
-	{% include 'partials/form.html' with form=form %}
+{% block site_body %}
+<div class="row">
+	<div class="col-lg-5 col-md-9 col-sm-12">
+		<div class="card">
+			<div class="card-body">
+				<h2 class="card-title">Sign up</h2>
+				<h6 class="card-subtitle text-muted mb-4">Already have an account? <a href = "{% url 'log_in' %}">Log in</a></h6>
+				<form action = "{% url 'sign_up' %}" method = "post">
+					{% csrf_token %}
+					{% include 'partials/form.html' with form=form %}
 
-	{% include 'partials/messages.html' %}
-	
-	<input type = "submit" value = "Sign up" class = "btn btn-primary">
-</form>
+					{% include 'partials/messages.html' %}
+
+					<input type = "submit" value = "Sign up" class = "btn btn-primary w-100">
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-7 col-md-3 d-flex justify-content-around">
+		{% load static %}
+		<img src="{% static 'images/Connected world-amico.svg' %}" alt="People with lines connecting to them to the Earth showing how everyone is connected." class = "img-fluid w-75 ml-auto" draggable="false">
+	</div>
+</div>
 {% endblock %}

@@ -8,10 +8,16 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ["email", "first_name", "last_name"]
 
-    new_password = forms.CharField(label="New password", widget=forms.PasswordInput())
+    email = forms.EmailField(label="Email", widget=forms.TextInput(attrs={"placeholder": "e.g. yuri.gagarin@roscosmos.ru"}))
+
+    first_name = forms.CharField(label="First name", widget=forms.TextInput(attrs={"placeholder": "e.g. Yuri"}))
+
+    last_name = forms.CharField(label="Last name", widget=forms.TextInput(attrs={"placeholder": "e.g. Gagarin"}))
+
+    new_password = forms.CharField(label="New password", widget=forms.PasswordInput(attrs={"placeholder": "e.g. tornado-human-radio-charge-even"}))
 
     password_confirmation = forms.CharField(
-        label="Password confirmation", widget=forms.PasswordInput()
+        label="Password confirmation", widget=forms.PasswordInput(attrs={"placeholder": "e.g. tornado-human-radio-charge-even"})
     )
 
     def clean(self):
