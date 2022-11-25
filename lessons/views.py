@@ -113,7 +113,7 @@ def student_transactions(request):
 Subpages for administrators.
 """
 def administrator_lesson_requests(request):
-    return render(request, "administrator/lesson_requests.html", {"allowed_roles": ["Administrator"], "dashboard": {"heading": "Lesson Requests", "subheading": "View student lesson requests."}})
+    return render(request, "administrator/lesson_requests.html", {"allowed_roles": ["Administrator"], "dashboard": {"heading": "Lesson Requests", "subheading": "Fulfill and delete student lesson requests."}})
 
 def administrator_student_balances(request):
     return HttpResponse("Page does not exist yet.")

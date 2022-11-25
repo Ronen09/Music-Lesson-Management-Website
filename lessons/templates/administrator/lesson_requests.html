@@ -1,10 +1,76 @@
 {% extends 'user_dashboard.html' %}
 {% block title %} {{ dashboard.heading }} {% endblock %}
 {% block dashboard_body %}
-<div class="container p-4">
-	<h1 class="display-3 mb-5"><strong>jaguar_</strong></h1>
-	<div class="mt-5">
-	tertret
+<div class="container-fluid d-flex flex-column h-100 gap-3 p-0 m-0">
+	<form class="row align-items-center">
+		<div class="col-auto">
+			<label for="autoSizingSelect">Filter by student:</label>
+			<select class="form-select" id="autoSizingSelect">
+				<option value="1">All students</option>
+				<option value="2">John Doe (john.doe@example.org)</option>
+			</select>
+		</div>
+		<div class="col-auto">
+			<label for="autoSizingSelect">Filter by term:</label>
+			<select class="form-select" id="autoSizingSelect">
+				<option value="1">Any term</option>
+				<option value="2">Two</option>
+				<option value="3">Three</option>
+			</select>
+		</div>
+	</form>
+
+	<div class="container-fluid row" style="flex:1;position:relative;">
+		<div style="overflow:auto;position:absolute;top:0;left:0;right:0;bottom:0;">
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+			<p>Test</p>
+		</div>
 	</div>
 </div>
 {% endblock %}
