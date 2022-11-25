@@ -14,8 +14,7 @@
         <title>MSMS | {% block title %} {% endblock %}</title>
     </head>
     <body>
-				<div style="margin: 20px">
-
+				<div style="height: 100vh; padding: 20px">
 				{% if "Anonymous" in allowed_roles or user.is_authenticated and user.role in allowed_roles %}
 					{% block body %} {% endblock %}
 				{% else %}

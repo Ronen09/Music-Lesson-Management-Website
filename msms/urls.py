@@ -24,4 +24,7 @@ urlpatterns = [
     path("logout/", views.log_out, name="log_out"),
     path("lesson_request/", views.lesson_request, name="lesson_request"),
     path("", views.home, name="home"),
+    path("student/", views.student, name="student"),
+    path("administrator/", views.administrator, name="administrator"),
+    path("director/", views.director, name="director"),
 ]
