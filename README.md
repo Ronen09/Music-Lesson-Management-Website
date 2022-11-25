@@ -51,3 +51,5 @@ $ python3 manage.py test
 The packages used by this application are specified in `requirements.txt`
 
 - Some source code taken from the Clucker project.
+- Some art taken from [https://storyset.com](https://storyset.com/illustration/connected-world/amico).
+    - [https://storyset.com/illustration/connected-world/amico]
