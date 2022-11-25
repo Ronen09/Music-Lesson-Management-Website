@@ -1,10 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'site_base.html' %}
 {% block title %}Home{% endblock %}
-{% block body %}
-<h1>Home</h1>
-{% if user.is_authenticated %}
-<p>You are currently logged in.</p>
-{% else %}
-<p>You are not currently logged in.</p>
-{% endif %}
+{% block site_body %}
+<div class="row">
+	<div class="col-sm-4">
+		<div class="card">
+			<div class="card-body">
+				<h2 class="card-title">Log in</h2>
+				<h6 class="card-subtitle text-muted">Don't have an account yet? <a href = "{% url 'sign_up' %}">Sign up</a></h6>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
