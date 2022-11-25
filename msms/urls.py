@@ -19,12 +19,31 @@ from lessons import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("signup/", views.sign_up, name="sign_up"),
+    path("lesson_request/", views.lesson_request, name="lesson_request"),
+
+    # General site pages
+    path("", views.home, name="home"),
     path("login/", views.log_in, name="log_in"),
     path("logout/", views.log_out, name="log_out"),
-    path("lesson_request/", views.lesson_request, name="lesson_request"),
-    path("", views.home, name="home"),
+    path("signup/", views.sign_up, name="sign_up"),
+
+    # User dashboards
     path("student/", views.student, name="student"),
     path("administrator/", views.administrator, name="administrator"),
     path("director/", views.director, name="director"),
+
+    # Subpages for student dashboard
+    path("student/booked-lessons", views.student_booked_lessons, name="student/booked-lessons"),
+    path("student/lesson-requests", views.student_lesson_requests, name="student/lesson-requests"),
+    path("student/manage-dependents", views.student_manage_dependents, name="student/manage-dependents"),
+    path("student/transactions", views.student_transactions, name="student/transactions"),
+
+    # Subpages for administrator dashboard
+    path("administrator/lesson-requests", views.administrator_lesson_requests, name="administrator/lesson-requests"),
+    path("administrator/student-balances", views.administrator_student_balances, name="administrator/student-balances"),
+
+    # Subpages for director dashboard
+    path("director/lesson-requests", views.director_lesson_requests, name="director/lesson-requests"),
+    path("director/student-balances", views.director_student_balances, name="director/student-balances"),
+    path("director/manage-administrators", views.director_manage_administrators, name="director/manage-administrators"),
 ]

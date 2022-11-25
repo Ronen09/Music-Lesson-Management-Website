@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
 
 from lessons.forms import SignUpForm, LogInForm, LessonRequestForm
 
@@ -88,7 +89,43 @@ def student(request):
     return render(request, "user_dashboard.html", {"allowed_roles": ["Student"]})
 
 def administrator(request):
-    return render(request, "user_dashboard.html", {"allowed_roles": ["Administrator"], "dashboard": {"heading": "Lesson Requests", "subheading": "View student lesson requests."}})
+    return redirect("administrator/lesson-requests")
 
 def director(request):
     return render(request, "user_dashboard.html", {"allowed_roles": ["Director"]})
+
+"""
+Subpages for students.
+"""
+def student_booked_lessons(request):
+    return HttpResponse("Page does not exist yet.")
+
+def student_lesson_requests(request):
+    return HttpResponse("Page does not exist yet.")
+
+def student_manage_dependents(request):
+    return HttpResponse("Page does not exist yet.")
+
+def student_transactions(request):
+    return HttpResponse("Page does not exist yet.")
+
+"""
+Subpages for administrators.
+"""
+def administrator_lesson_requests(request):
+    return render(request, "administrator/lesson_requests.html", {"allowed_roles": ["Administrator"], "dashboard": {"heading": "Lesson Requests", "subheading": "View student lesson requests."}})
+
+def administrator_student_balances(request):
+    return HttpResponse("Page does not exist yet.")
+
+"""
+Subpages for directors.
+"""
+def director_lesson_requests(request):
+    return render(request, "administrator/lesson_requests.html", {"allowed_roles": ["Administrator"], "dashboard": {"heading": "Lesson Requests", "subheading": "View student lesson requests."}})
+
+def director_student_balances(request):
+    return HttpResponse("Page does not exist yet.")
+
+def director_manage_administrators(request):
+    return HttpResponse("Page does not exist yet.")

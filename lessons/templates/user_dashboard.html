@@ -1,7 +1,4 @@
 {% extends 'base.html' %}
-{% block title %}
-Lesson request
-{% endblock %}
 {% block body %}
 <div class="row h-100">
   <div class="col-sm-3 h-100">
@@ -12,18 +9,53 @@ Lesson request
 				<hr>
 				<ul class="list-group mb-4">
 					{% if user.role == "Student" %}
-						<li class="list-group-item">Booked Lessons</li>
-						<li class="list-group-item">Lesson Requests</li>
-						<li class="list-group-item">Manage Dependents</li>
-						<li class="list-group-item">Transactions</li>
-					{% elif user.role == "Administrator" or user.role == "Director" %}
-						<li class="list-group-item">Booked Lessons</li>
-						<li class="list-group-item">Lesson Requests</li>
-						<li class="list-group-item">Student Balances</li>
-					{% endif %}
-					
-					{% if user.role == "Director" %}
-						<li class="list-group-item">Manage Administrators</li>
+						<li class="list-group-item">
+							<a href = "{% url 'student/booked-lessons' %}">
+								Booked Lessons
+							</a>
+						</li>
+						<li class="list-group-item">
+							<a href = "{% url 'student/lesson-requests' %}">
+								Lesson Requests
+							</a>
+						</li>
+						<li class="list-group-item">
+							<a href = "{% url 'student/manage-dependents' %}">
+								Manage Dependents							
+							</a>
+						</li>
+						<li class="list-group-item">
+							<a href = "{% url 'student/transactions' %}">
+								Transactions							
+							</a>
+						</li>
+					{% elif user.role == "Administrator" %}
+						<li class="list-group-item">
+							<a href = "{% url 'administrator/lesson-requests' %}">
+								Lesson Requests							
+							</a>
+						</li>
+						<li class="list-group-item">
+							<a href = "{% url 'administrator/student-balances' %}">
+								Student Balances							
+							</a>
+						</li>
+					{% elif user.role == "Director" %}
+						<li class="list-group-item">
+							<a href = "{% url 'administrator/lesson-requests' %}">
+								Lesson Requests							
+							</a>
+						</li>
+						<li class="list-group-item">
+							<a href = "{% url 'administrator/student-balances' %}">
+								Student Balances							
+							</a>
+						</li>
+						<li class="list-group-item">
+							<a href = "{% url 'director/manage-administrator' %}">
+								Manage Administrators							
+							</a>
+						</li>
 					{% endif %}
 				</ul>
         <a href="{% url 'log_out' %}" class="btn btn-outline btn-outline-danger w-100 mt-auto">Logout</a>
@@ -36,7 +68,7 @@ Lesson request
         <h3 class="card-title">{{ dashboard.heading }}</h3>
         <h6 class="card-subtitle text-muted">{{ dashboard.subheading }}</h6>
 				<hr>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        {% block dashboard_body %} {% endblock %}
       </div>
     </div>
   </div>
