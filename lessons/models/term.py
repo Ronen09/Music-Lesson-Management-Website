@@ -6,3 +6,13 @@ class Term(models.Model):
     order = models.IntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
+
+    def __str__(self):
+        date_format = "%d %B %Y"  # Like: "06 January 2023"
+
+        formatted_start_date = self.start_date.strftime(date_format)
+        formatted_end_date = self.end_date.strftime(date_format)
+
+        term_name = f"Term {self.order} ({formatted_start_date} - {formatted_end_date})"
+
+        return term_name
