@@ -17,7 +17,7 @@ def lesson_request(request):
         if form.is_valid():
             form.save()
 
-            return redirect("home")
+            return redirect("student")
     else:
         form = LessonRequestForm(current_user=request.user)
 
@@ -122,18 +122,39 @@ def director(request):
 Subpages for students.
 """
 
-
 def student_booked_lessons(request):
     return HttpResponse("Page does not exist yet.")
 
-
 def student_lesson_requests(request):
-    return HttpResponse("Page does not exist yet.")
+    if request.user.is_authenticated:
+        if(LessonRequest.objects.filter(user_id = request.user.id).exists()):
+            lesson = LessonRequest.objects.get(user_id = request.user.id)
+            return render(request,"manage_lesson_requests.html",{'allowed_roles':["Student"],"lesson":lesson})
+    return render(request,"manage_lesson_requests.html",{'allowed_roles':['Student']})
 
+def student_delete_lesson_requests(request,id):
+    lesson = LessonRequest.objects.get(id=id)
+    if request.user.is_authenticated:
+        if lesson.user_id == request.user.id:
+            lesson.delete()
+        return redirect("student/lesson_requests")
+    else:
+        return redirect("student/lesson_requests")
+
+def student_edit_lesson_requests(request,id):
+    lesson_request = LessonRequest.objects.get(id=id)
+    if request.user.is_authenticated:
+        form = LessonRequestForm(current_user=request.user,instance=lesson_request)
+        if request.method == 'POST':
+            form = LessonRequestForm(request.POST,instance=lesson_request)
+            if form.is_valid():
+                form.save()
+                return redirect("student/lesson_requests")
+        lesson_request.delete() 
+    return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
 
 def student_manage_dependents(request):
     return HttpResponse("Page does not exist yet.")
-
 
 def student_transactions(request):
     return HttpResponse("Page does not exist yet.")
