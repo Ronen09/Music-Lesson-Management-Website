@@ -1,0 +1,8 @@
+{% extends 'user_dashboard.html' %}
+{% block title %} {{ dashboard.heading }} {% endblock %}
+{% block dashboard_body %}
+<h1>{{ user_id }}</h1>
+<div class="col-auto">
+	<a class="btn btn-outline-primary" href="{% url 'administrator/lesson-requests' %}">Go back to other lesson requests</a>
+</div>
+{% endblock %}

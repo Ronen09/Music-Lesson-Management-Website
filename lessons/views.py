@@ -180,6 +180,18 @@ def administrator_lesson_requests(request):
         })
 
 
+def administrator_lesson_requests_view(request, user_id):
+    return render(
+        request, "administrator/lesson_requests/view.html", {
+            "allowed_roles": ["Administrator"],
+            "dashboard": {
+                "heading": "View Lesson Request",
+                "subheading": "See more details about a lesson request."
+            },
+            "user_id": user_id,
+        })
+
+
 def administrator_student_balances(request):
     return HttpResponse("Page does not exist yet.")
 

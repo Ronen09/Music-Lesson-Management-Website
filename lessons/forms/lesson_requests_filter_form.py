@@ -1,6 +1,5 @@
 from django import forms
 
-from lessons.helpers import get_students, get_terms
 from lessons.models import User, Term
 
 
