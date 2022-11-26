@@ -15,11 +15,13 @@
 			<input type = "submit" value = "Apply filter" class = "btn btn-primary">
 		</div>
 	</form>
-
 	<div class="container-fluid row" style="flex:1;position:relative;">
 		<div style="overflow:auto;position:absolute;top:0;left:0;right:0;bottom:0;">
 			{% for lesson_request in lesson_requests %}
 				<div class="card p-3 mb-3">
+					<div class="row">
+						<p><strong>{{ lesson_request.user }}</strong></p>
+					</div>
 					<div class="row">
 						<div class="col-auto">
 							<p>
