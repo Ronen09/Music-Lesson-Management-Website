@@ -20,25 +20,25 @@
 			{% for lesson_request in lesson_requests %}
 				<div class="card p-3 mb-3">
 					<div class="row">
-						<p><strong>{{ lesson_request.user }}</strong></p>
+						<p class="mb-2"><strong>{{ lesson_request.user }}</strong></p>
 					</div>
 					<div class="row">
 						<div class="col-auto">
-							<p>
+							<p class="m-0">
 								Number of Lessons
 								<br>
 								<span class="text-muted">{{ lesson_request.no_of_lessons }}</span>
 							</p>
 						</div>
 						<div class="col-auto">
-							<p>
+							<p class="m-0">
 								Lesson Duration
 								<br>
 								<span class="text-muted">{{ lesson_request.lesson_duration_in_mins }} minutes</span>
 							</p>
 						</div>
 						<div class="col-auto">
-							<p>Interval Between Lessons
+							<p class="m-0">Interval Between Lessons
 								<br>
 								<span class="text-muted">{{ lesson_request.lesson_interval_in_days }} days</span>
 							</p>
