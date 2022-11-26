@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 
 from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm
-from lessons.models import LessonRequest
+from lessons.models import LessonRequest, User
 
 # Create your views here.
 
@@ -180,15 +180,15 @@ def administrator_lesson_requests(request):
         })
 
 
-def administrator_lesson_requests_view(request, user_id):
+def administrator_lesson_requests_view(request, lesson_request_id):
     return render(
         request, "administrator/lesson_requests/view.html", {
             "allowed_roles": ["Administrator"],
             "dashboard": {
-                "heading": "View Lesson Request",
-                "subheading": "See more details about a lesson request."
+                "heading": f"View Lesson Request #{lesson_request_id}",
+                "subheading": "See more details about this lesson request."
             },
-            "user_id": user_id,
+            "lesson_request": LessonRequest.objects.get(pk=lesson_request_id),
         })
 
 

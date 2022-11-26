@@ -50,7 +50,7 @@ urlpatterns = [
     path("administrator/lesson-requests",
          views.administrator_lesson_requests,
          name="administrator/lesson-requests"),
-    path("administrator/lesson-requests/view/<int:user_id>",
+    path("administrator/lesson-requests/view/<int:lesson_request_id>",
          views.administrator_lesson_requests_view,
          name="administrator/lesson-requests/view"),
     path("administrator/student-balances",

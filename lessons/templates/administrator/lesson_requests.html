@@ -25,7 +25,7 @@
 						</div>
 						<div class="col-auto">
 							<div class="row gap-3 m-1">
-								<a class="btn btn-outline-primary col" href="{% url 'administrator/lesson-requests/view' user_id=lesson_request.user.pk %}">View</a>
+								<a class="btn btn-outline-primary col" href="{% url 'administrator/lesson-requests/view' lesson_request_id=lesson_request.pk %}">View</a>
 								<button type="button" class="btn btn-outline-primary col">Book</button>
 								<button type="button" class="btn btn-outline-danger col">Delete</button>
 							</div>

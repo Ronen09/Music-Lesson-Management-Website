@@ -1,7 +1,38 @@
 {% extends 'user_dashboard.html' %}
 {% block title %} {{ dashboard.heading }} {% endblock %}
 {% block dashboard_body %}
-<h1>{{ user_id }}</h1>
+<h6>
+	Student:
+	<span class="text-muted">
+		{% with user=lesson_request.user %}
+			{{ user.first_name }} {{ user.last_name }} ({{ user.email }})
+		{% endwith %}
+	</span>
+</h6>
+<h6>
+	Number of Lessons:
+	<span class="text-muted">
+		{{ lesson_request.no_of_lessons }}
+	</span>
+</h6>
+<h6>
+	Lesson Duration:
+	<span class="text-muted">
+		{{ lesson_request.lesson_duration_in_mins }} minutes
+	</span>
+</h6>
+<h6>
+	Interval Between Lessons:
+	<span class="text-muted">
+		{{ lesson_request.lesson_interval_in_days }} days
+	</span>
+</h6>
+<h6 class="mb-3">
+	Further Information:
+	<span class="text-muted">
+		{{ lesson_request.further_information }}
+	</span>
+</h6>
 <div class="col-auto">
 	<a class="btn btn-outline-primary" href="{% url 'administrator/lesson-requests' %}">Go back to other lesson requests</a>
 </div>
