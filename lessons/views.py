@@ -161,7 +161,7 @@ def administrator_lesson_requests(request):
     if selected_student not in [None, ""]:
         lesson_requests = lesson_requests.filter(user=selected_student)
 
-    if selected_status not in [None, ""]:
+    if selected_status not in [None, "", "all"]:
         if selected_status == "fulfilled":
             lesson_requests = lesson_requests.filter(is_fulfilled=True)
         else:

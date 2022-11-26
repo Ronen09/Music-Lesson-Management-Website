@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from lessons.models import User, Term
+from lessons.models import User, Term, LessonRequest
 
 from datetime import datetime
 
@@ -29,7 +29,7 @@ class Command(BaseCommand):
         }]
 
         for user in users:
-            if User.objects.filter(**user).exists() == False:
+            if User.objects.filter(email=user["email"]).exists() == False:
                 User.objects.create_user(**user)
 
     def add_terms(self):
@@ -63,11 +63,47 @@ class Command(BaseCommand):
             if Term.objects.filter(**term).exists() == False:
                 Term.objects.create(**term)
 
+    def add_lesson_requests(self):
+        # Get John Doe (student)
+        john_doe_user = User.objects.filter(
+            email="john.doe@example.org").first()
+
+        lesson_requests = [{
+            "is_available_on_monday": True,
+            "is_available_on_tuesday": True,
+            "is_available_on_wednesday": False,
+            "is_available_on_thursday": False,
+            "is_available_on_friday": True,
+            "no_of_lessons": 5,
+            "lesson_interval_in_days": 7,
+            "lesson_duration_in_mins": 45,
+            "further_information": "I have learning difficulties.",
+            "user": john_doe_user,
+        }, {
+            "is_available_on_monday": False,
+            "is_available_on_tuesday": True,
+            "is_available_on_wednesday": True,
+            "is_available_on_thursday": True,
+            "is_available_on_friday": True,
+            "no_of_lessons": 4,
+            "lesson_interval_in_days": 14,
+            "lesson_duration_in_mins": 60,
+            "is_fulfilled": True,
+            "user": john_doe_user,
+        }]
+
+        for lesson_request in lesson_requests:
+            if LessonRequest.objects.filter(
+                    **lesson_request).exists() == False:
+                LessonRequest.objects.create(**lesson_request)
+
     def handle(self, *args, **options):
         print("Seeding initial data...")
+
         try:
             self.add_users()
             self.add_terms()
+            self.add_lesson_requests()
             print("Data was seeded.")
         except:
-            raise CommandError("Unable to seed data.")
+            raise CommandError("Unable to seed initial data.")
