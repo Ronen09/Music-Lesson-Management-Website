@@ -174,6 +174,11 @@ def administrator_lesson_requests(request):
         lesson_duration = f"{lesson_request.lesson_duration_in_mins} minutes"
         lesson_interval = f"{lesson_request.lesson_interval_in_days} days"
 
+        book_url = reverse('administrator/lesson-requests/book',
+                           kwargs={"lesson_request_id": lesson_request.pk})
+        view_url = reverse('administrator/lesson-requests/view',
+                           kwargs={"lesson_request_id": lesson_request.pk})
+
         return {
             "heading":
             heading,
@@ -189,16 +194,12 @@ def administrator_lesson_requests(request):
             }],
             "buttons": [{
                 "name": "Book",
-                "url": "",
+                "url": book_url,
                 "type": "outline-primary",
             }, {
-                "name":
-                "View",
-                "url":
-                reverse('administrator/lesson-requests/view',
-                        kwargs={"lesson_request_id": lesson_request.pk}),
-                "type":
-                "outline-primary",
+                "name": "View",
+                "url": view_url,
+                "type": "outline-primary",
             }, {
                 "name": "Edit",
                 "url": "",
@@ -235,6 +236,41 @@ def administrator_lesson_requests_view(request, lesson_request_id):
                 "subheading": "See more details about this lesson request."
             },
             "lesson_request": LessonRequest.objects.get(pk=lesson_request_id),
+        })
+
+
+def administrator_lesson_requests_book(request, lesson_request_id):
+    lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
+
+    def convert_lesson_request_to_booked_lesson_cards(lesson_request):
+        cards = []
+
+        for n in range(lesson_request.no_of_lessons):
+            heading = f"Lesson #{n + 1}"
+
+            cards.append({
+                "heading":
+                heading,
+                "info": [{
+                    "title": "Date",
+                    "description": "Unknown",
+                }]
+            })
+
+        return cards
+
+    cards = convert_lesson_request_to_booked_lesson_cards(lesson_request)
+
+    return render(
+        request, "administrator/lesson_requests/book.html", {
+            "allowed_roles": ["Administrator"],
+            "dashboard": {
+                "heading":
+                f"Book Lessons for Lesson Request #{lesson_request_id}",
+                "subheading": "Book lessons for this lesson request."
+            },
+            "lesson_request": lesson_request,
+            "cards": cards
         })
 
 

@@ -1,6 +1,9 @@
 {% extends 'user_dashboard.html' %}
 {% block title %} {{ dashboard.heading }} {% endblock %}
 {% block dashboard_body %}
+<div class="col-auto mb-3">
+	<a class="btn btn-outline-primary" href="{% url 'administrator/lesson-requests' %}">Go back to other lesson requests</a>
+</div>
 <h6>
 	Student:
 	<span class="text-muted">
@@ -73,7 +76,7 @@
 		{% endif %}
 	</span>
 </h6>
-<h6 class="mb-3">
+<h6>
 	Available on Friday:
 	<span class="text-muted">
 		{% if lesson_request.is_available_on_friday %}
@@ -83,7 +86,4 @@
 		{% endif %}
 	</span>
 </h6>
-<div class="col-auto">
-	<a class="btn btn-outline-primary" href="{% url 'administrator/lesson-requests' %}">Go back to other lesson requests</a>
-</div>
 {% endblock %}
