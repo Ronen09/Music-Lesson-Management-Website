@@ -15,48 +15,8 @@
 			<input type = "submit" value = "Apply filter" class = "btn btn-primary">
 		</div>
 	</form>
-	<div class="container-fluid row" style="flex:1;position:relative;">
-		<div style="overflow:auto;position:absolute;top:0;left:0;right:0;bottom:0;">
-			{% for lesson_request in lesson_requests %}
-				<div class="card p-3 mb-3">
-					<div class="row">
-						<div class="col">
-							<p><strong>{{ lesson_request.user }}</strong></p>
-						</div>
-						<div class="col-auto">
-							<div class="row gap-3 m-1">
-								<button type="button" class="btn btn-outline-primary col">Book</button>
-								<a class="btn btn-outline-primary col" href="{% url 'administrator/lesson-requests/view' lesson_request_id=lesson_request.pk %}">View</a>
-								<button type="button" class="btn btn-outline-primary col">Edit</button>
-								<button type="button" class="btn btn-outline-danger col">Delete</button>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-auto">
-							<p class="m-0">
-								Number of Lessons
-								<br>
-								<span class="text-muted">{{ lesson_request.no_of_lessons }}</span>
-							</p>
-						</div>
-						<div class="col-auto">
-							<p class="m-0">
-								Lesson Duration
-								<br>
-								<span class="text-muted">{{ lesson_request.lesson_duration_in_mins }} minutes</span>
-							</p>
-						</div>
-						<div class="col-auto">
-							<p class="m-0">Interval Between Lessons
-								<br>
-								<span class="text-muted">{{ lesson_request.lesson_interval_in_days }} days</span>
-							</p>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-		</div>
-	</div>
+
+	<!-- Show table of cards where each card shows information about a request -->
+	{% include 'partials/card_table.html' %}
 </div>
 {% endblock %}

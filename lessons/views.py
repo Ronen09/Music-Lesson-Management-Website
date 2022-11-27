@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
+from django.urls import reverse
 
 from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm
 from lessons.models import LessonRequest, User
@@ -167,6 +168,50 @@ def administrator_lesson_requests(request):
         else:
             lesson_requests = lesson_requests.filter(is_fulfilled=False)
 
+    def convert_lesson_request_to_card(lesson_request):
+        heading = lesson_request.user
+        no_of_lessons = str(lesson_request.no_of_lessons)
+        lesson_duration = f"{lesson_request.lesson_duration_in_mins} minutes"
+        lesson_interval = f"{lesson_request.lesson_interval_in_days} days"
+
+        return {
+            "heading":
+            heading,
+            "info": [{
+                "title": "Number of Lessons",
+                "description": no_of_lessons,
+            }, {
+                "title": "Lesson Duration",
+                "description": lesson_duration,
+            }, {
+                "title": "Interval Between Lessons",
+                "description": lesson_interval,
+            }],
+            "buttons": [{
+                "name": "Book",
+                "url": "",
+                "type": "outline-primary",
+            }, {
+                "name":
+                "View",
+                "url":
+                reverse('administrator/lesson-requests/view',
+                        kwargs={"lesson_request_id": lesson_request.pk}),
+                "type":
+                "outline-primary",
+            }, {
+                "name": "Edit",
+                "url": "",
+                "type": "outline-primary",
+            }, {
+                "name": "Delete",
+                "url": "",
+                "type": "outline-danger",
+            }],
+        }
+
+    cards = map(convert_lesson_request_to_card, lesson_requests)
+
     # Return page
     return render(
         request, "administrator/lesson_requests.html", {
@@ -176,7 +221,8 @@ def administrator_lesson_requests(request):
             "dashboard": {
                 "heading": "Lesson Requests",
                 "subheading": "Fulfill and delete student lesson requests."
-            }
+            },
+            "cards": cards
         })
 
 
