@@ -152,7 +152,7 @@ def student_edit_lesson_requests(request,id):
             if form.is_valid():
                 form.save()
                 return redirect("student/lesson_requests")
-        lesson_request.delete() 
+        lesson_request.delete()
     return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
 
 def student_manage_dependents(request):
@@ -242,7 +242,7 @@ def administrator_lesson_requests(request):
     # Return page
     return render(
         request, "administrator/lesson_requests.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "lesson_requests": lesson_requests,
             "form": form,
             "dashboard": {
@@ -256,7 +256,7 @@ def administrator_lesson_requests(request):
 def administrator_lesson_requests_view(request, lesson_request_id):
     return render(
         request, "administrator/lesson_requests/view.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
                 "heading": f"View Lesson Request #{lesson_request_id}",
                 "subheading": "See more details about this lesson request."
@@ -363,7 +363,7 @@ Subpages for directors.
 def director_lesson_requests(request):
     return render(
         request, "administrator/lesson_requests.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
                 "heading": "Lesson Requests",
                 "subheading": "View student lesson requests."
