@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
+from django.views.generic.edit import DeleteView
 
 from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm
 from lessons.models import LessonRequest, User, Lesson
@@ -179,7 +180,7 @@ def administrator_lesson_requests(request):
         view_url = reverse('administrator/lesson-requests/view',
                            kwargs={"lesson_request_id": lesson_request.pk})
         delete_url = reverse('administrator/lesson-requests/delete',
-                             kwargs={"lesson_request_id": lesson_request.pk})
+                             kwargs={"pk": lesson_request.pk})
 
         return {
             "heading":
@@ -255,7 +256,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
             "administrator/lesson-requests/book/lessons/delete",
             kwargs={
                 "lesson_request_id": lesson_request.pk,
-                "lesson_id": lesson.pk
+                "pk": lesson.pk
             })
 
         heading = lesson.datetime.strftime("%d %B %Y (%H:%M)")
@@ -348,3 +349,34 @@ def director_student_balances(request):
 
 def director_manage_administrators(request):
     return HttpResponse("Page does not exist yet.")
+
+
+""" Views for deleting objects. """
+
+
+class AdministratorLessonRequestDeleteView(DeleteView):
+    model = LessonRequest
+    success_url = "/administrator/lesson-requests"
+    template_name = "administrator/lesson_requests/delete.html"
+    extra_context = {
+        "allowed_roles": ["Administrator"],
+        "dashboard": {
+            "heading": "Delete lesson request",
+            "subheading": "Confirm deletion of lesson request."
+        }
+    }
+
+
+class AdministratorLessonDeleteView(DeleteView):
+    model = Lesson
+    template_name = "administrator/lesson_requests/delete.html"
+    extra_context = {
+        "allowed_roles": ["Administrator"],
+        "dashboard": {
+            "heading": "Delete lesson",
+            "subheading": "Confirm deletion of lesson."
+        }
+    }
+
+    def get_success_url(self):
+        return f"/administrator/lesson-requests/book/{self.object.lesson_request.pk}"

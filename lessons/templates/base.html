@@ -14,8 +14,9 @@
         <title>jaguar_ | {% block title %} {% endblock %}</title>
     </head>
     <body>
+			{{ is_authentication_required }}
 				<div style="height: 100vh; padding: 20px">
-				{% if "Anonymous" in allowed_roles or user.is_authenticated and user.role in allowed_roles %}
+				{% if is_authentication_required == False or "Anonymous" in allowed_roles or user.is_authenticated and user.role in allowed_roles %}
 					{% block body %} {% endblock %}
 				{% else %}
 					<p>You do not have permission to view this page. Please <a href="{% url 'log_in' %}">log in</a>.</p>
