@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from lessons.models import User, Term, LessonRequest
+from lessons.models import User, Term, LessonRequest, Teacher, Lesson
 
 
 class Command(BaseCommand):
@@ -9,10 +9,11 @@ class Command(BaseCommand):
         print("Unseeding initial data...")
 
         try:
-            # We use `filter` instead of `get` so there are no errors if the users don't exist yet.
             User.objects.filter(is_superuser=False).delete()
             Term.objects.all().delete()
             LessonRequest.objects.all().delete()
+            Teacher.objects.all().delete()
+            Lesson.objects.all().delete()
         except:
             raise CommandError("Unable to unseed initial data.")
 

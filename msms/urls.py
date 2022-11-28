@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from lessons import views
+from lessons.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -47,6 +48,31 @@ urlpatterns = [
     path("administrator/lesson-requests/view/<int:lesson_request_id>",
          views.administrator_lesson_requests_view,
          name="administrator/lesson-requests/view"),
+    path("administrator/lesson-requests/book/<int:lesson_request_id>",
+         views.administrator_lesson_requests_book,
+         name="administrator/lesson-requests/book"),
+    path(
+        "administrator/lesson-requests/book/<int:lesson_request_id>/finalise-booking",
+        views.administrator_lesson_requests_book_finalise_booking,
+        name="administrator/lesson-requests/book/finalise-booking"),
+    path("administrator/lesson-requests/delete/<pk>",
+         AdministratorLessonRequestDeleteView.as_view(),
+         name="administrator/lesson-requests/delete"),
+    path("administrator/lesson-requests/edit/<pk>",
+         AdministratorLessonRequestUpdateView.as_view(),
+         name="administrator/lesson-requests/edit"),
+    path(
+        "administrator/lesson-requests/book/<int:lesson_request_id>/lessons/delete/<pk>",
+        AdministratorLessonDeleteView.as_view(),
+        name="administrator/lesson-requests/book/lessons/delete"),
+    path(
+        "administrator/lesson-requests/book/<int:lesson_request_id>/lessons/edit/<pk>",
+        AdministratorLessonUpdateView.as_view(),
+        name="administrator/lesson-requests/book/lessons/edit"),
+    path(
+        "administrator/lesson-requests/book/<int:lesson_request_id>/lessons/create",
+        AdministratorLessonCreateView.as_view(),
+        name="administrator/lesson-requests/book/lessons/create"),
     path("administrator/student-balances",
          views.administrator_student_balances,
          name="administrator/student-balances"),

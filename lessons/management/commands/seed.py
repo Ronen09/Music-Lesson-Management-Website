@@ -1,8 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from lessons.models import User, Term, LessonRequest
+from lessons.models import User, Term, LessonRequest, Teacher, Lesson
 
 from datetime import datetime
+from django.utils import timezone
 
 
 class Command(BaseCommand):
@@ -97,13 +98,52 @@ class Command(BaseCommand):
                     **lesson_request).exists() == False:
                 LessonRequest.objects.create(**lesson_request)
 
+    def add_teachers(self):
+        teachers = [{
+            "first_name": "John",
+            "last_name": "Simmons"
+        }, {
+            "first_name": "Rebecca",
+            "last_name": "Smith",
+        }, {
+            "first_name": "Daniel",
+            "last_name": "Baker"
+        }]
+
+        for teacher in teachers:
+            if Teacher.objects.filter(**teacher).exists() == False:
+                Teacher.objects.create(**teacher)
+
+    def add_lessons(self):
+        john_doe_user = User.objects.filter(
+            email="john.doe@example.org").first()
+        john_doe_lesson_request = LessonRequest.objects.filter(
+            user=john_doe_user).first()
+        rebecca_smith_teacher = Teacher.objects.filter(
+            first_name="Rebecca", last_name="Smith").first()
+
+        lessons = [{
+            "teacher": rebecca_smith_teacher,
+            "datetime": datetime(2023, 5, 2, 13, 0, tzinfo=timezone.utc),
+            "duration": 45,
+            "further_information": "I want to learn piano.",
+            "user": john_doe_user,
+            "lesson_request": john_doe_lesson_request,
+        }]
+
+        for lesson in lessons:
+            if Lesson.objects.filter(**lesson).exists() == False:
+                Lesson.objects.create(**lesson)
+
     def handle(self, *args, **options):
         print("Seeding initial data...")
 
-        try:
-            self.add_users()
-            self.add_terms()
-            self.add_lesson_requests()
-            print("Data was seeded.")
-        except:
-            raise CommandError("Unable to seed initial data.")
+        #try:
+        self.add_users()
+        self.add_terms()
+        self.add_lesson_requests()
+        self.add_teachers()
+        self.add_lessons()
+        print("Data was seeded.")
+        #except:
+        #    raise CommandError("Unable to seed initial data.")
