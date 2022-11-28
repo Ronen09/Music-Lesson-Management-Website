@@ -21,39 +21,39 @@
 						</li>
 						<li class="list-group-item">
 							<a href = "{% url 'student/manage-dependents' %}">
-								Manage Dependents							
+								Manage Dependents
 							</a>
 						</li>
 						<li class="list-group-item">
 							<a href = "{% url 'student/transactions' %}">
-								Transactions							
+								Transactions
 							</a>
 						</li>
 					{% elif user.role == "Administrator" %}
 						<li class="list-group-item">
 							<a href = "{% url 'administrator/lesson-requests' %}">
-								Lesson Requests							
+								Lesson Requests
 							</a>
 						</li>
 						<li class="list-group-item">
 							<a href = "{% url 'administrator/student-balances' %}">
-								Student Balances							
+								Student Balances
 							</a>
 						</li>
 					{% elif user.role == "Director" %}
 						<li class="list-group-item">
 							<a href = "{% url 'administrator/lesson-requests' %}">
-								Lesson Requests							
+								Lesson Requests
 							</a>
 						</li>
 						<li class="list-group-item">
 							<a href = "{% url 'administrator/student-balances' %}">
-								Student Balances							
+								Student Balances
 							</a>
 						</li>
 						<li class="list-group-item">
-							<a href = "{% url 'director/manage-administrator' %}">
-								Manage Administrators							
+							<a href = "{% url 'director/manage-administrators' %}">
+								Manage Administrators
 							</a>
 						</li>
 					{% endif %}
