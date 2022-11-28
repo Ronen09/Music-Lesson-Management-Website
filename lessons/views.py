@@ -297,6 +297,15 @@ def administrator_lesson_requests_book(request, lesson_request_id):
         })
 
 
+def administrator_lesson_requests_book_finalise_booking(
+        request, lesson_request_id):
+    lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
+    lesson_request.is_fulfilled = True
+    lesson_request.save()
+
+    return redirect(f"/administrator/lesson-requests")
+
+
 def administrator_lesson_requests_book_lessons_delete(request,
                                                       lesson_request_id,
                                                       lesson_id):
