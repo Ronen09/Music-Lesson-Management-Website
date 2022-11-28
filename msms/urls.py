@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from lessons import views
-from lessons.views import AdministratorLessonDeleteView, AdministratorLessonRequestDeleteView
+from lessons.views import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -64,10 +64,21 @@ urlpatterns = [
     path("administrator/lesson-requests/delete/<pk>",
          AdministratorLessonRequestDeleteView.as_view(),
          name="administrator/lesson-requests/delete"),
+    path("administrator/lesson-requests/edit/<pk>",
+         AdministratorLessonRequestUpdateView.as_view(),
+         name="administrator/lesson-requests/edit"),
     path(
         "administrator/lesson-requests/book/<int:lesson_request_id>/lessons/delete/<pk>",
         AdministratorLessonDeleteView.as_view(),
         name="administrator/lesson-requests/book/lessons/delete"),
+    path(
+        "administrator/lesson-requests/book/<int:lesson_request_id>/lessons/edit/<pk>",
+        AdministratorLessonUpdateView.as_view(),
+        name="administrator/lesson-requests/book/lessons/edit"),
+    path(
+        "administrator/lesson-requests/book/<int:lesson_request_id>/lessons/create",
+        AdministratorLessonCreateView.as_view(),
+        name="administrator/lesson-requests/book/lessons/create"),
     path("administrator/student-balances",
          views.administrator_student_balances,
          name="administrator/student-balances"),

@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView, UpdateView, CreateView
 
-from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm
-from lessons.models import LessonRequest, User, Lesson
+from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm, LessonEditForm, LessonRequestEditForm
+from lessons.models import LessonRequest, Lesson
 
 # Create your views here.
 
@@ -179,6 +179,8 @@ def administrator_lesson_requests(request):
                            kwargs={"lesson_request_id": lesson_request.pk})
         view_url = reverse('administrator/lesson-requests/view',
                            kwargs={"lesson_request_id": lesson_request.pk})
+        edit_url = reverse('administrator/lesson-requests/edit',
+                           kwargs={"pk": lesson_request.pk})
         delete_url = reverse('administrator/lesson-requests/delete',
                              kwargs={"pk": lesson_request.pk})
 
@@ -205,7 +207,7 @@ def administrator_lesson_requests(request):
                 "type": "outline-primary",
             }, {
                 "name": "Edit",
-                "url": "",
+                "url": edit_url,
                 "type": "outline-primary",
             }, {
                 "name": "Delete",
@@ -252,6 +254,11 @@ def administrator_lesson_requests_book(request, lesson_request_id):
     cards = []
 
     for lesson in lessons:
+        edit_url = reverse("administrator/lesson-requests/book/lessons/edit",
+                           kwargs={
+                               "lesson_request_id": lesson_request.pk,
+                               "pk": lesson.pk
+                           })
         delete_url = reverse(
             "administrator/lesson-requests/book/lessons/delete",
             kwargs={
@@ -276,7 +283,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
             }],
             "buttons": [{
                 "name": "Edit",
-                "url": "",
+                "url": edit_url,
                 "type": "outline-primary"
             }, {
                 "name": "Delete",
@@ -357,7 +364,7 @@ def director_manage_administrators(request):
 class AdministratorLessonRequestDeleteView(DeleteView):
     model = LessonRequest
     success_url = "/administrator/lesson-requests"
-    template_name = "administrator/lesson_requests/delete.html"
+    template_name = "delete.html"
     extra_context = {
         "allowed_roles": ["Administrator"],
         "dashboard": {
@@ -369,7 +376,7 @@ class AdministratorLessonRequestDeleteView(DeleteView):
 
 class AdministratorLessonDeleteView(DeleteView):
     model = Lesson
-    template_name = "administrator/lesson_requests/delete.html"
+    template_name = "delete.html"
     extra_context = {
         "allowed_roles": ["Administrator"],
         "dashboard": {
@@ -380,3 +387,59 @@ class AdministratorLessonDeleteView(DeleteView):
 
     def get_success_url(self):
         return f"/administrator/lesson-requests/book/{self.object.lesson_request.pk}"
+
+
+class AdministratorLessonUpdateView(UpdateView):
+    model = Lesson
+    form_class = LessonEditForm
+    template_name = "edit.html"
+    extra_context = {
+        "allowed_roles": ["Administrator"],
+        "dashboard": {
+            "heading": "Modify lesson",
+            "subheading": "Change details about this lesson."
+        }
+    }
+
+    def get_success_url(self):
+        return f"/administrator/lesson-requests/book/{self.object.lesson_request.pk}"
+
+
+class AdministratorLessonCreateView(CreateView):
+    model = Lesson
+    form_class = LessonEditForm
+    template_name = "edit.html"
+    extra_context = {
+        "allowed_roles": ["Administrator"],
+        "dashboard": {
+            "heading": "Create new lesson",
+            "subheading": "Create a new lesson by specifying details."
+        }
+    }
+
+    def get_success_url(self):
+        return f"/administrator/lesson-requests/book/{self.object.lesson_request.pk}"
+
+    def get_initial(self):
+        initial = super(AdministratorLessonCreateView, self).get_initial()
+
+        lesson_request = LessonRequest.objects.filter(
+            pk=self.kwargs["lesson_request_id"]).first()
+
+        initial["lesson_request"] = lesson_request.pk
+        initial["user"] = lesson_request.user.pk
+        return initial
+
+
+class AdministratorLessonRequestUpdateView(UpdateView):
+    model = LessonRequest
+    form_class = LessonRequestEditForm
+    success_url = "/administrator/lesson-requests"
+    template_name = "edit.html"
+    extra_context = {
+        "allowed_roles": ["Administrator"],
+        "dashboard": {
+            "heading": "Modify lesson request",
+            "subheading": "Change details about this lesson request."
+        }
+    }
