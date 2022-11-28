@@ -315,7 +315,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
 
     return render(
         request, "administrator/lesson_requests/book.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
                 "heading":
                 f"Book Lessons for Lesson Request #{lesson_request_id}",
@@ -387,7 +387,7 @@ class AdministratorLessonRequestDeleteView(DeleteView):
     success_url = "/administrator/lesson-requests"
     template_name = "delete.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Delete lesson request",
             "subheading": "Confirm deletion of lesson request."
@@ -399,7 +399,7 @@ class AdministratorLessonDeleteView(DeleteView):
     model = Lesson
     template_name = "delete.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Delete lesson",
             "subheading": "Confirm deletion of lesson."
@@ -415,7 +415,7 @@ class AdministratorLessonUpdateView(UpdateView):
     form_class = LessonEditForm
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Modify lesson",
             "subheading": "Change details about this lesson."
@@ -431,7 +431,7 @@ class AdministratorLessonCreateView(CreateView):
     form_class = LessonEditForm
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Create new lesson",
             "subheading": "Create a new lesson by specifying details."
@@ -458,7 +458,7 @@ class AdministratorLessonRequestUpdateView(UpdateView):
     success_url = "/administrator/lesson-requests"
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Modify lesson request",
             "subheading": "Change details about this lesson request."
