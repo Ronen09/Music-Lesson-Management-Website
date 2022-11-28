@@ -56,6 +56,13 @@ urlpatterns = [
     path("administrator/lesson-requests/book/<int:lesson_request_id>",
          views.administrator_lesson_requests_book,
          name="administrator/lesson-requests/book"),
+    path("administrator/lesson-requests/delete/<int:lesson_request_id>",
+         views.administrator_lesson_requests_delete,
+         name="administrator/lesson-requests/delete"),
+    path(
+        "administrator/lesson-requests/book/<int:lesson_request_id>/lessons/delete/<int:lesson_id>",
+        views.administrator_lesson_requests_book_lessons_delete,
+        name="administrator/lesson-requests/book/lessons/delete"),
     path("administrator/student-balances",
          views.administrator_student_balances,
          name="administrator/student-balances"),

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 
 from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm
-from lessons.models import LessonRequest, User
+from lessons.models import LessonRequest, User, Lesson
 
 # Create your views here.
 
@@ -178,6 +178,8 @@ def administrator_lesson_requests(request):
                            kwargs={"lesson_request_id": lesson_request.pk})
         view_url = reverse('administrator/lesson-requests/view',
                            kwargs={"lesson_request_id": lesson_request.pk})
+        delete_url = reverse('administrator/lesson-requests/delete',
+                             kwargs={"lesson_request_id": lesson_request.pk})
 
         return {
             "heading":
@@ -193,12 +195,12 @@ def administrator_lesson_requests(request):
                 "description": lesson_interval,
             }],
             "buttons": [{
-                "name": "Book",
-                "url": book_url,
-                "type": "outline-primary",
-            }, {
                 "name": "View",
                 "url": view_url,
+                "type": "outline-primary",
+            }, {
+                "name": "Book",
+                "url": book_url,
                 "type": "outline-primary",
             }, {
                 "name": "Edit",
@@ -206,7 +208,7 @@ def administrator_lesson_requests(request):
                 "type": "outline-primary",
             }, {
                 "name": "Delete",
-                "url": "",
+                "url": delete_url,
                 "type": "outline-danger",
             }],
         }
@@ -242,24 +244,45 @@ def administrator_lesson_requests_view(request, lesson_request_id):
 def administrator_lesson_requests_book(request, lesson_request_id):
     lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
 
-    def convert_lesson_request_to_booked_lesson_cards(lesson_request):
-        cards = []
+    # Get lessons for this lesson request (if they exist)
+    lessons = Lesson.objects.filter(lesson_request=lesson_request)
 
-        for n in range(lesson_request.no_of_lessons):
-            heading = f"Lesson #{n + 1}"
+    # Convert lessons to cards
+    cards = []
 
-            cards.append({
-                "heading":
-                heading,
-                "info": [{
-                    "title": "Date",
-                    "description": "Unknown",
-                }]
+    for lesson in lessons:
+        delete_url = reverse(
+            "administrator/lesson-requests/book/lessons/delete",
+            kwargs={
+                "lesson_request_id": lesson_request.pk,
+                "lesson_id": lesson.pk
             })
 
-        return cards
+        heading = lesson.datetime.strftime("%d %B %Y (%H:%M)")
 
-    cards = convert_lesson_request_to_booked_lesson_cards(lesson_request)
+        cards.append({
+            "heading":
+            heading,
+            "info": [{
+                "title": "Teacher",
+                "description": lesson.teacher,
+            }, {
+                "title": "Duration",
+                "description": f"{lesson.duration} minutes",
+            }, {
+                "title": "Further Information",
+                "description": lesson.further_information,
+            }],
+            "buttons": [{
+                "name": "Edit",
+                "url": "",
+                "type": "outline-primary"
+            }, {
+                "name": "Delete",
+                "url": delete_url,
+                "type": "outline-danger",
+            }]
+        })
 
     return render(
         request, "administrator/lesson_requests/book.html", {
@@ -270,8 +293,24 @@ def administrator_lesson_requests_book(request, lesson_request_id):
                 "subheading": "Book lessons for this lesson request."
             },
             "lesson_request": lesson_request,
-            "cards": cards
+            "cards": cards,
         })
+
+
+def administrator_lesson_requests_book_lessons_delete(request,
+                                                      lesson_request_id,
+                                                      lesson_id):
+    lesson = Lesson.objects.get(pk=lesson_id)
+    lesson.delete()
+
+    return redirect(f"/administrator/lesson-requests/book/{lesson_request_id}")
+
+
+def administrator_lesson_requests_delete(request, lesson_request_id):
+    lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
+    lesson_request.delete()
+
+    return redirect("administrator/lesson-requests")
 
 
 def administrator_student_balances(request):
