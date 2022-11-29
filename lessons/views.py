@@ -20,7 +20,7 @@ def lesson_request(request):
         if form.is_valid():
             form.save()
 
-            return redirect("home")
+            return redirect("student")
     else:
         form = LessonRequestForm(current_user=request.user)
 
@@ -125,18 +125,39 @@ def director(request):
 Subpages for students.
 """
 
-
 def student_booked_lessons(request):
     return HttpResponse("Page does not exist yet.")
 
-
 def student_lesson_requests(request):
-    return HttpResponse("Page does not exist yet.")
+    if request.user.is_authenticated:
+        if(LessonRequest.objects.filter(user_id = request.user.id).exists()):
+            lesson = LessonRequest.objects.get(user_id = request.user.id)
+            return render(request,"manage_lesson_requests.html",{'allowed_roles':["Student"],"lesson":lesson})
+    return render(request,"manage_lesson_requests.html",{'allowed_roles':['Student']})
 
+def student_delete_lesson_requests(request,id):
+    lesson = LessonRequest.objects.get(id=id)
+    if request.user.is_authenticated:
+        if lesson.user_id == request.user.id:
+            lesson.delete()
+        return redirect("student/lesson_requests")
+    else:
+        return redirect("student/lesson_requests")
+
+def student_edit_lesson_requests(request,id):
+    lesson_request = LessonRequest.objects.get(id=id)
+    if request.user.is_authenticated:
+        form = LessonRequestForm(current_user=request.user,instance=lesson_request)
+        if request.method == 'POST':
+            form = LessonRequestForm(request.POST,instance=lesson_request)
+            if form.is_valid():
+                form.save()
+                return redirect("student/lesson_requests")
+        lesson_request.delete()
+    return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
 
 def student_manage_dependents(request):
     return HttpResponse("Page does not exist yet.")
-
 
 def student_transactions(request):
     return HttpResponse("Page does not exist yet.")
@@ -222,7 +243,7 @@ def administrator_lesson_requests(request):
     # Return page
     return render(
         request, "administrator/lesson_requests.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "lesson_requests": lesson_requests,
             "form": form,
             "dashboard": {
@@ -236,7 +257,7 @@ def administrator_lesson_requests(request):
 def administrator_lesson_requests_view(request, lesson_request_id):
     return render(
         request, "administrator/lesson_requests/view.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
                 "heading": f"View Lesson Request #{lesson_request_id}",
                 "subheading": "See more details about this lesson request."
@@ -298,7 +319,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
 
     return render(
         request, "administrator/lesson_requests/book.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
                 "heading":
                 f"Book Lessons for Lesson Request #{lesson_request_id}",
@@ -346,7 +367,7 @@ Subpages for directors.
 def director_lesson_requests(request):
     return render(
         request, "administrator/lesson_requests.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
                 "heading": "Lesson Requests",
                 "subheading": "View student lesson requests."
@@ -370,7 +391,7 @@ class AdministratorLessonRequestDeleteView(DeleteView):
     success_url = "/administrator/lesson-requests"
     template_name = "delete.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Delete lesson request",
             "subheading": "Confirm deletion of lesson request."
@@ -382,7 +403,7 @@ class AdministratorLessonDeleteView(DeleteView):
     model = Lesson
     template_name = "delete.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Delete lesson",
             "subheading": "Confirm deletion of lesson."
@@ -398,7 +419,7 @@ class AdministratorLessonUpdateView(UpdateView):
     form_class = LessonEditForm
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Modify lesson",
             "subheading": "Change details about this lesson."
@@ -414,7 +435,7 @@ class AdministratorLessonCreateView(CreateView):
     form_class = LessonEditForm
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Create new lesson",
             "subheading": "Create a new lesson by specifying details."
@@ -441,7 +462,7 @@ class AdministratorLessonRequestUpdateView(UpdateView):
     success_url = "/administrator/lesson-requests"
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Administrator"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Modify lesson request",
             "subheading": "Change details about this lesson request."

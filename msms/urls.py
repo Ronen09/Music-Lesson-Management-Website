@@ -34,18 +34,12 @@ urlpatterns = [
     path("director/", views.director, name="director"),
 
     # Subpages for student dashboard
-    path("student/booked-lessons",
-         views.student_booked_lessons,
-         name="student/booked-lessons"),
-    path("student/lesson-requests",
-         views.student_lesson_requests,
-         name="student/lesson-requests"),
-    path("student/manage-dependents",
-         views.student_manage_dependents,
-         name="student/manage-dependents"),
-    path("student/transactions",
-         views.student_transactions,
-         name="student/transactions"),
+    path("student/booked-lessons", views.student_booked_lessons, name="student/booked-lessons"),
+    path("student/lesson_requests", views.student_lesson_requests, name="student/lesson_requests"),
+    path("student/delete_lesson_request/<int:id>",views.student_delete_lesson_requests,name="student/delete_lesson_request"),
+    path("student/edit_lesson_request/<int:id>",views.student_edit_lesson_requests,name="student/edit_lesson_request"),
+    path("student/manage-dependents", views.student_manage_dependents, name="student/manage-dependents"),
+    path("student/transactions", views.student_transactions, name="student/transactions"),
 
     # Subpages for administrator dashboard
     path("administrator/lesson-requests",
