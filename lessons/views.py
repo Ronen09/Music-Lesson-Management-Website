@@ -8,6 +8,7 @@ from django.views.generic.edit import DeleteView, UpdateView, CreateView
 
 from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm, LessonEditForm, LessonRequestEditForm
 from lessons.models import LessonRequest, Lesson
+from lessons.helpers import get_lesson_price
 
 # Create your views here.
 
@@ -280,6 +281,9 @@ def administrator_lesson_requests_book(request, lesson_request_id):
             }, {
                 "title": "Further Information",
                 "description": lesson.further_information,
+            }, {
+                "title": "Price",
+                "description": get_lesson_price(lesson.duration),
             }],
             "buttons": [{
                 "name": "Edit",
