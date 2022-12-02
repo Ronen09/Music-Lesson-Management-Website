@@ -378,10 +378,15 @@ def director_lesson_requests(request):
 def director_student_balances(request):
     return HttpResponse("Page does not exist yet.")
 
-
 def director_manage_administrators(request):
-    return HttpResponse("Page does not exist yet.")
-
+    return render(
+        request, "director/manage_administrators.html", {
+            "allowed_roles": ["Director"],
+            "dashboard": {
+                "heading": "Administrator Accounts",
+                "subheading": "View and manage administrator accounts"
+            }
+        })
 
 """ Views for deleting objects. """
 
