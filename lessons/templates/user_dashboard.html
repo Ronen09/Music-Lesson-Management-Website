@@ -15,7 +15,7 @@
 							</a>
 						</li>
 						<li class="list-group-item">
-							<a href = "{% url 'student/lesson_requests' %}">
+							<a href = "{% url 'student/lesson-requests' %}">
 								Lesson Requests
 							</a>
 						</li>
@@ -64,9 +64,10 @@
   </div>
   <div class="col-sm-9 h-100">
     <div class="card h-100">
-      <div class="card-body h-100">
+      <div class="card-body h-100 d-flex flex-column">
         <h3 class="card-title">{{ dashboard.heading }}</h3>
-        <h6 class="card-subtitle text-muted mb-3">{{ dashboard.subheading }}</h6>
+        <h6 class="card-subtitle text-muted">{{ dashboard.subheading }}</h6>
+				<hr>
         {% block dashboard_body %} {% endblock %}
       </div>
     </div>
