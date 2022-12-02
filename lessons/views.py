@@ -1,14 +1,14 @@
-from django.shortcuts import render
-from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.generic.edit import DeleteView, UpdateView, CreateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm, LessonEditForm, LessonRequestEditForm
-from lessons.models import LessonRequest, Lesson
+from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestEditForm, LessonRequestForm,
+                           LessonRequestsFilterForm, LogInForm, SignUpForm)
 from lessons.helpers import get_lesson_price
+from lessons.models import Lesson, LessonRequest
 
 # Create your views here.
 
@@ -24,10 +24,7 @@ def lesson_request(request):
     else:
         form = LessonRequestForm(current_user=request.user)
 
-    return render(request, "lesson_request.html", {
-        "form": form,
-        "allowed_roles": ["Student"]
-    })
+    return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
 
 
 """
@@ -60,15 +57,11 @@ def log_in(request):
                 elif (user.role == "Director"):
                     return redirect("director")
 
-        messages.add_message(request, messages.ERROR,
-                             "The credentials provided were invalid!")
+        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
 
     form = LogInForm()
 
-    return render(request, "log_in.html", {
-        "form": form,
-        "allowed_roles": ["Anonymous"]
-    })
+    return render(request, "log_in.html", {"form": form, "allowed_roles": ["Anonymous"]})
 
 
 def log_out(request):
@@ -96,10 +89,7 @@ def sign_up(request):
     else:
         form = SignUpForm()
 
-    return render(request, "sign_up.html", {
-        "form": form,
-        "allowed_roles": ["Anonymous"]
-    })
+    return render(request, "sign_up.html", {"form": form, "allowed_roles": ["Anonymous"]})
 
 
 """
@@ -108,8 +98,7 @@ User dashboards for each type of user (student, administrator and director).
 
 
 def student(request):
-    return render(request, "user_dashboard.html",
-                  {"allowed_roles": ["Student"]})
+    return render(request, "user_dashboard.html", {"allowed_roles": ["Student"]})
 
 
 def administrator(request):
@@ -117,25 +106,27 @@ def administrator(request):
 
 
 def director(request):
-    return render(request, "user_dashboard.html",
-                  {"allowed_roles": ["Director"]})
+    return render(request, "user_dashboard.html", {"allowed_roles": ["Director"]})
 
 
 """
 Subpages for students.
 """
 
+
 def student_booked_lessons(request):
     return HttpResponse("Page does not exist yet.")
 
+
 def student_lesson_requests(request):
     if request.user.is_authenticated:
-        if(LessonRequest.objects.filter(user_id = request.user.id).exists()):
-            lesson = LessonRequest.objects.get(user_id = request.user.id)
-            return render(request,"manage_lesson_requests.html",{'allowed_roles':["Student"],"lesson":lesson})
-    return render(request,"manage_lesson_requests.html",{'allowed_roles':['Student']})
+        if (LessonRequest.objects.filter(user_id=request.user.id).exists()):
+            lesson = LessonRequest.objects.get(user_id=request.user.id)
+            return render(request, "manage_lesson_requests.html", {'allowed_roles': ["Student"], "lesson": lesson})
+    return render(request, "manage_lesson_requests.html", {'allowed_roles': ['Student']})
 
-def student_delete_lesson_requests(request,id):
+
+def student_delete_lesson_requests(request, id):
     lesson = LessonRequest.objects.get(id=id)
     if request.user.is_authenticated:
         if lesson.user_id == request.user.id:
@@ -144,20 +135,23 @@ def student_delete_lesson_requests(request,id):
     else:
         return redirect("student/lesson_requests")
 
-def student_edit_lesson_requests(request,id):
+
+def student_edit_lesson_requests(request, id):
     lesson_request = LessonRequest.objects.get(id=id)
     if request.user.is_authenticated:
-        form = LessonRequestForm(current_user=request.user,instance=lesson_request)
+        form = LessonRequestForm(current_user=request.user, instance=lesson_request)
         if request.method == 'POST':
-            form = LessonRequestForm(request.POST,instance=lesson_request)
+            form = LessonRequestForm(request.POST, instance=lesson_request)
             if form.is_valid():
                 form.save()
                 return redirect("student/lesson_requests")
         lesson_request.delete()
     return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
 
+
 def student_manage_dependents(request):
     return HttpResponse("Page does not exist yet.")
+
 
 def student_transactions(request):
     return HttpResponse("Page does not exist yet.")
@@ -197,18 +191,14 @@ def administrator_lesson_requests(request):
         lesson_duration = f"{lesson_request.lesson_duration_in_mins} minutes"
         lesson_interval = f"{lesson_request.lesson_interval_in_days} days"
 
-        book_url = reverse('administrator/lesson-requests/book',
-                           kwargs={"lesson_request_id": lesson_request.pk})
-        view_url = reverse('administrator/lesson-requests/view',
-                           kwargs={"lesson_request_id": lesson_request.pk})
-        edit_url = reverse('administrator/lesson-requests/edit',
-                           kwargs={"pk": lesson_request.pk})
-        delete_url = reverse('administrator/lesson-requests/delete',
-                             kwargs={"pk": lesson_request.pk})
+        book_url = reverse('administrator/lesson-requests/book', kwargs={"lesson_request_id": lesson_request.pk})
+        view_url = reverse('administrator/lesson-requests/view', kwargs={"lesson_request_id": lesson_request.pk})
+        edit_url = reverse('administrator/lesson-requests/edit', kwargs={"pk": lesson_request.pk})
+        delete_url = reverse('administrator/lesson-requests/delete', kwargs={"pk": lesson_request.pk})
 
         return {
             "heading":
-            heading,
+                heading,
             "info": [{
                 "title": "Number of Lessons",
                 "description": no_of_lessons,
@@ -281,18 +271,17 @@ def administrator_lesson_requests_book(request, lesson_request_id):
                                "lesson_request_id": lesson_request.pk,
                                "pk": lesson.pk
                            })
-        delete_url = reverse(
-            "administrator/lesson-requests/book/lessons/delete",
-            kwargs={
-                "lesson_request_id": lesson_request.pk,
-                "pk": lesson.pk
-            })
+        delete_url = reverse("administrator/lesson-requests/book/lessons/delete",
+                             kwargs={
+                                 "lesson_request_id": lesson_request.pk,
+                                 "pk": lesson.pk
+                             })
 
         heading = lesson.datetime.strftime("%d %B %Y (%H:%M)")
 
         cards.append({
             "heading":
-            heading,
+                heading,
             "info": [{
                 "title": "Teacher",
                 "description": lesson.teacher,
@@ -321,8 +310,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
         request, "administrator/lesson_requests/book.html", {
             "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
-                "heading":
-                f"Book Lessons for Lesson Request #{lesson_request_id}",
+                "heading": f"Book Lessons for Lesson Request #{lesson_request_id}",
                 "subheading": "Book lessons for this lesson request."
             },
             "lesson_request": lesson_request,
@@ -330,8 +318,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
         })
 
 
-def administrator_lesson_requests_book_finalise_booking(
-        request, lesson_request_id):
+def administrator_lesson_requests_book_finalise_booking(request, lesson_request_id):
     lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
     lesson_request.is_fulfilled = True
     lesson_request.save()
@@ -339,9 +326,7 @@ def administrator_lesson_requests_book_finalise_booking(
     return redirect(f"/administrator/lesson-requests")
 
 
-def administrator_lesson_requests_book_lessons_delete(request,
-                                                      lesson_request_id,
-                                                      lesson_id):
+def administrator_lesson_requests_book_lessons_delete(request, lesson_request_id, lesson_id):
     lesson = Lesson.objects.get(pk=lesson_id)
     lesson.delete()
 
@@ -432,7 +417,7 @@ class AdministratorLessonUpdateView(UpdateView):
 
 class AdministratorLessonCreateView(CreateView):
     model = Lesson
-    form_class = LessonEditForm
+    form_class = LessonCreateForm
     template_name = "edit.html"
     extra_context = {
         "allowed_roles": ["Administrator", "Director"],
@@ -448,8 +433,7 @@ class AdministratorLessonCreateView(CreateView):
     def get_initial(self):
         initial = super(AdministratorLessonCreateView, self).get_initial()
 
-        lesson_request = LessonRequest.objects.filter(
-            pk=self.kwargs["lesson_request_id"]).first()
+        lesson_request = LessonRequest.objects.filter(pk=self.kwargs["lesson_request_id"]).first()
 
         initial["lesson_request"] = lesson_request.pk
         initial["user"] = lesson_request.user.pk
