@@ -33,9 +33,9 @@ main_patterns = [
 
 student_patterns = [
     path("booked-lessons", views.student_booked_lessons, name="student/booked-lessons"),
-    path("lesson-requests", views.student_lesson_requests, name="student/lesson_requests"),
-    path("delete-lesson-request/<int:id>", views.student_delete_lesson_requests, name="student/delete_lesson_request"),
-    path("edit-lesson-request/<int:id>", views.student_edit_lesson_requests, name="student/edit_lesson_request"),
+    #path("lesson-requests", views.student_lesson_requests, name="student/lesson_requests"),
+    #path("delete-lesson-request/<int:id>", views.student_delete_lesson_requests, name="student/delete_lesson_request"),
+    #path("edit-lesson-request/<int:id>", views.student_edit_lesson_requests, name="student/edit_lesson_request"),
     path("manage-dependents/", views.student_manage_dependents, name="student/manage-dependents"),
     path("transactions/", views.student_transactions, name="student/transactions"),
 ]
