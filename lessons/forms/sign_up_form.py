@@ -4,21 +4,24 @@ from lessons.models import User
 
 
 class SignUpForm(forms.ModelForm):
+
     class Meta:
         model = User
         fields = ["email", "first_name", "last_name"]
+        widgets = {
+            "first_name": forms.TextInput(attrs={"placeholder": "e.g. Yuri"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "e.g. Gagarin"})
+        }
 
-    email = forms.EmailField(label="Email", widget=forms.TextInput(attrs={"placeholder": "e.g. yuri.gagarin@roscosmos.ru"}))
+    email = forms.EmailField(label="Email",
+                             widget=forms.TextInput(attrs={"placeholder": "e.g. yuri.gagarin@roscosmos.ru"}))
 
-    first_name = forms.CharField(label="First name", widget=forms.TextInput(attrs={"placeholder": "e.g. Yuri"}))
-
-    last_name = forms.CharField(label="Last name", widget=forms.TextInput(attrs={"placeholder": "e.g. Gagarin"}))
-
-    new_password = forms.CharField(label="New password", widget=forms.PasswordInput(attrs={"placeholder": "e.g. tornado-human-radio-charge-even"}))
+    new_password = forms.CharField(
+        label="New password", widget=forms.PasswordInput(attrs={"placeholder": "e.g. tornado-human-radio-charge-even"}))
 
     password_confirmation = forms.CharField(
-        label="Password confirmation", widget=forms.PasswordInput(attrs={"placeholder": "e.g. tornado-human-radio-charge-even"})
-    )
+        label="Password confirmation",
+        widget=forms.PasswordInput(attrs={"placeholder": "e.g. tornado-human-radio-charge-even"}))
 
     def clean(self):
         super().clean()
@@ -27,9 +30,7 @@ class SignUpForm(forms.ModelForm):
         password_confirmation = self.cleaned_data.get("password_confirmation")
 
         if new_password != password_confirmation:
-            self.add_error(
-                "password_confirmation", "Confirmation does not match password."
-            )
+            self.add_error("password_confirmation", "Confirmation does not match password.")
 
     def save(self, commit=True):
         super().save(commit=False)
