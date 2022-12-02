@@ -118,6 +118,7 @@ def student_booked_lessons(request):
     return HttpResponse("Page does not exist yet.")
 
 
+"""
 def student_lesson_requests(request):
     if request.user.is_authenticated:
         if (LessonRequest.objects.filter(user_id=request.user.id).exists()):
@@ -147,6 +148,7 @@ def student_edit_lesson_requests(request, id):
                 return redirect("student/lesson_requests")
         lesson_request.delete()
     return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
+"""
 
 
 def student_manage_dependents(request):
