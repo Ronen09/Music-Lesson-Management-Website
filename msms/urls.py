@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from lessons import old_views
-from lessons.views import student
+from lessons.views import administrator, student
 
 main_patterns = [
     path("", old_views.home, name="home"),
@@ -42,7 +42,7 @@ student_patterns = [
 ]
 
 administrator_patterns = [
-    path("lesson-requests", old_views.administrator_lesson_requests, name="administrator/lesson-requests"),
+    path("lesson-requests", administrator.lesson_requests, name="administrator/lesson-requests"),
     path("lesson-requests/view/<int:lesson_request_id>",
          old_views.administrator_lesson_requests_view,
          name="administrator/lesson-requests/view"),
