@@ -38,12 +38,26 @@ def lesson_requests(request):
         edit_url = reverse('administrator/lesson-requests/edit', kwargs={"pk": lesson_request.pk})
         delete_url = reverse('administrator/lesson-requests/delete', kwargs={"pk": lesson_request.pk})
 
-        # Check if the lesson request has been fulfilled
-        has_lesson_request_been_fulfilled(lesson_request)
+        buttons = [{
+            "name": "View",
+            "url": view_url,
+            "type": "outline-primary",
+        }]
+
+        if not lesson_request.is_fulfilled:
+            buttons.append({
+                "name": "Edit",
+                "url": edit_url,
+                "type": "outline-primary",
+            })
+            buttons.append({
+                "name": "Delete",
+                "url": delete_url,
+                "type": "outline-danger",
+            })
 
         return {
-            "heading":
-                heading,
+            "heading": heading,
             "info": [{
                 "title": "Number of Lessons",
                 "description": no_of_lessons,
@@ -54,19 +68,7 @@ def lesson_requests(request):
                 "title": "Interval Between Lessons",
                 "description": lesson_interval,
             }],
-            "buttons": [{
-                "name": "View",
-                "url": view_url,
-                "type": "outline-primary",
-            }, {
-                "name": "Edit",
-                "url": edit_url,
-                "type": "outline-primary",
-            }, {
-                "name": "Delete",
-                "url": delete_url,
-                "type": "outline-danger",
-            }],
+            "buttons": buttons,
         }
 
     cards = map(convert_lesson_request_to_card, lesson_requests)
