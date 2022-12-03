@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestForm, LogInForm, SignUpForm)
 from lessons.helpers import get_lesson_price
-from lessons.models import Lesson, LessonRequest
+from lessons.models import Invoice, Lesson, LessonRequest
 
 # Create your views here.
 
@@ -223,6 +223,9 @@ def administrator_lesson_requests_book_finalise_booking(request, lesson_request_
     lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
     lesson_request.is_fulfilled = True
     lesson_request.save()
+
+    invoice = Invoice.objects.create(lesson_request=lesson_request, user=lesson_request.user)
+    invoice.save()
 
     return redirect(f"/administrator/lesson-requests")
 
