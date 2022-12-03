@@ -14,10 +14,14 @@ def invoices(request):
         amount_due = get_invoice_amount(invoice)
 
         return {
-            "heading": heading,
+            "heading":
+                heading,
             "info": [{
                 "title": "Amount Due",
                 "description": amount_due,
+            }, {
+                "title": "Bank Reference",
+                "description": heading
             }],
         }
 
