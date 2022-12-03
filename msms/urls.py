@@ -56,7 +56,7 @@ administrator_patterns = [
          old_views.administrator_lesson_requests_book_finalise_booking,
          name="administrator/lesson-requests/book/finalise-booking"),
     path("lesson-requests/delete/<pk>",
-         old_views.AdministratorLessonRequestDeleteView.as_view(),
+         shared.LessonRequestDeleteView.as_view(),
          name="administrator/lesson-requests/delete"),
     path("lesson-requests/edit/<pk>",
          old_views.AdministratorLessonRequestUpdateView.as_view(),

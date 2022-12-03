@@ -279,19 +279,6 @@ def director_manage_administrators(request):
 """ Views for deleting objects. """
 
 
-class AdministratorLessonRequestDeleteView(DeleteView):
-    model = LessonRequest
-    success_url = "/administrator/lesson-requests"
-    template_name = "delete.html"
-    extra_context = {
-        "allowed_roles": ["Administrator", "Director"],
-        "dashboard": {
-            "heading": "Delete lesson request",
-            "subheading": "Confirm deletion of lesson request."
-        }
-    }
-
-
 class AdministratorLessonDeleteView(DeleteView):
     model = Lesson
     template_name = "delete.html"
