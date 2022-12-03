@@ -33,8 +33,8 @@ def lesson_requests(request):
         lesson_interval = f"{lesson_request.lesson_interval_in_days} days"
 
         view_url = reverse('student/lesson-requests/view', kwargs={"lesson_request_id": lesson_request.pk})
-        edit_url = reverse('administrator/lesson-requests/edit', kwargs={"pk": lesson_request.pk})
-        delete_url = reverse('administrator/lesson-requests/delete', kwargs={"pk": lesson_request.pk})
+        edit_url = reverse('student/lesson-requests/edit', kwargs={"pk": lesson_request.pk})
+        delete_url = reverse('student/lesson-requests/delete', kwargs={"pk": lesson_request.pk})
 
         buttons = [{
             "name": "View",

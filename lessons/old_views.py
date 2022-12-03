@@ -5,8 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestEditForm, LessonRequestForm, LogInForm,
-                           SignUpForm)
+from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestForm, LogInForm, SignUpForm)
 from lessons.helpers import get_lesson_price
 from lessons.models import Lesson, LessonRequest
 
@@ -333,17 +332,3 @@ class AdministratorLessonCreateView(CreateView):
         initial["lesson_request"] = lesson_request.pk
         initial["user"] = lesson_request.user.pk
         return initial
-
-
-class AdministratorLessonRequestUpdateView(UpdateView):
-    model = LessonRequest
-    form_class = LessonRequestEditForm
-    success_url = "/administrator/lesson-requests"
-    template_name = "edit.html"
-    extra_context = {
-        "allowed_roles": ["Administrator", "Director"],
-        "dashboard": {
-            "heading": "Modify lesson request",
-            "subheading": "Change details about this lesson request."
-        }
-    }
