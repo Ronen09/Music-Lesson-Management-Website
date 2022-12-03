@@ -29,7 +29,7 @@ class TestTerm(TestCase):
         try:
             self.term.full_clean()
         except ValidationError:
-            self.fail("Test invoice should be valid.")
+            self.fail("Test term should be valid.")
 
     def _assert_term_is_invalid(self):
         with self.assertRaises(ValidationError):
