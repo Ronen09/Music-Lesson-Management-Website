@@ -24,6 +24,9 @@ def booked_lessons(request):
             "heading":
                 heading,
             "info": [{
+                "title": "Price",
+                "description": get_lesson_price(lesson),
+            }, {
                 "title": "Teacher",
                 "description": lesson.teacher,
             }, {
@@ -32,9 +35,6 @@ def booked_lessons(request):
             }, {
                 "title": "Further Information",
                 "description": lesson.further_information,
-            }, {
-                "title": "Price",
-                "description": get_lesson_price(lesson),
             }]
         })
 
