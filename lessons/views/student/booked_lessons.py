@@ -34,7 +34,7 @@ def booked_lessons(request):
                 "description": lesson.further_information,
             }, {
                 "title": "Price",
-                "description": get_lesson_price(lesson.duration),
+                "description": get_lesson_price(lesson),
             }]
         })
 

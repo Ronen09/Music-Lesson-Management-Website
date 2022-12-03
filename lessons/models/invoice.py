@@ -6,4 +6,4 @@ class Invoice(models.Model):
     user = models.ForeignKey("lessons.User", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.user.pk}-{self.pk}"
+        return f"#{str(self.user.pk).zfill(4)}-{str(self.pk).zfill(3)}"

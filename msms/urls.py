@@ -42,9 +42,7 @@ student_lesson_requests_patterns = [
 student_patterns = [
     path("booked-lessons", student.booked_lessons, name="student/booked-lessons"),
     path("lesson-requests/", include(student_lesson_requests_patterns)),
-    #path("lesson-requests", views.student_lesson_requests, name="student/lesson_requests"),
-    #path("delete-lesson-request/<int:id>", views.student_delete_lesson_requests, name="student/delete_lesson_request"),
-    #path("edit-lesson-request/<int:id>", views.student_edit_lesson_requests, name="student/edit_lesson_request"),
+    path("invoices/", student.invoices, name="student/invoices"),
     path("manage-dependents/", old_views.student_manage_dependents, name="student/manage-dependents"),
     path("transactions/", old_views.student_transactions, name="student/transactions"),
 ]

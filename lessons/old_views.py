@@ -194,7 +194,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
                 "description": lesson.further_information,
             }, {
                 "title": "Price",
-                "description": get_lesson_price(lesson.duration),
+                "description": get_lesson_price(lesson),
             }],
             "buttons": [{
                 "name": "Edit",
