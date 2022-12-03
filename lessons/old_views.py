@@ -164,18 +164,6 @@ Subpages for administrators.
 """
 
 
-def administrator_lesson_requests_view(request, lesson_request_id):
-    return render(
-        request, "administrator/lesson_requests/view.html", {
-            "allowed_roles": ["Administrator", "Director"],
-            "dashboard": {
-                "heading": f"View Lesson Request #{lesson_request_id}",
-                "subheading": "See more details about this lesson request."
-            },
-            "lesson_request": LessonRequest.objects.get(pk=lesson_request_id),
-        })
-
-
 def administrator_lesson_requests_book(request, lesson_request_id):
     lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
 

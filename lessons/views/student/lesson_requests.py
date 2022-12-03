@@ -32,7 +32,7 @@ def lesson_requests(request):
         lesson_duration = f"{lesson_request.lesson_duration_in_mins} minutes"
         lesson_interval = f"{lesson_request.lesson_interval_in_days} days"
 
-        view_url = reverse('administrator/lesson-requests/view', kwargs={"lesson_request_id": lesson_request.pk})
+        view_url = reverse('student/lesson-requests/view', kwargs={"lesson_request_id": lesson_request.pk})
         edit_url = reverse('administrator/lesson-requests/edit', kwargs={"pk": lesson_request.pk})
         delete_url = reverse('administrator/lesson-requests/delete', kwargs={"pk": lesson_request.pk})
 

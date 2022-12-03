@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from lessons import old_views
-from lessons.views import administrator, student
+from lessons.views import administrator, shared, student
 
 main_patterns = [
     path("", old_views.home, name="home"),
@@ -34,6 +34,9 @@ main_patterns = [
 student_patterns = [
     path("booked-lessons", old_views.student_booked_lessons, name="student/booked-lessons"),
     path("lesson-requests", student.lesson_requests, name="student/lesson-requests"),
+    path("lesson-requests/view/<int:lesson_request_id>",
+         shared.view_lesson_request,
+         name="student/lesson-requests/view"),
     #path("lesson-requests", views.student_lesson_requests, name="student/lesson_requests"),
     #path("delete-lesson-request/<int:id>", views.student_delete_lesson_requests, name="student/delete_lesson_request"),
     #path("edit-lesson-request/<int:id>", views.student_edit_lesson_requests, name="student/edit_lesson_request"),
@@ -44,7 +47,7 @@ student_patterns = [
 administrator_patterns = [
     path("lesson-requests", administrator.lesson_requests, name="administrator/lesson-requests"),
     path("lesson-requests/view/<int:lesson_request_id>",
-         old_views.administrator_lesson_requests_view,
+         shared.view_lesson_request,
          name="administrator/lesson-requests/view"),
     path("lesson-requests/book/<int:lesson_request_id>",
          old_views.administrator_lesson_requests_book,
