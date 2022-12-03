@@ -5,7 +5,8 @@ from lessons.models import Invoice
 
 
 class TestInvoice(TestCase):
-    fixtures = ["lessons/tests/fixtures/invoice.json"]
+    fixtures_path = "lessons/tests/fixtures"
+    fixtures = [f"{fixtures_path}/invoice.json", f"{fixtures_path}/teacher.json"]
 
     def setUp(self):
         self.invoice = Invoice.objects.get(pk=1)

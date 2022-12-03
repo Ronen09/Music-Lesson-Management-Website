@@ -8,14 +8,6 @@
     }
   },
   {
-    "model": "lessons.teacher",
-    "pk": 1,
-    "fields": {
-      "first_name": "Daniel",
-      "last_name": "Baker"
-    }
-  },
-  {
     "model": "lessons.lessonrequest",
     "pk": 14,
     "fields": {
