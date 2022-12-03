@@ -31,15 +31,17 @@ main_patterns = [
     path("lesson_request/", old_views.lesson_request, name="lesson_request"),
 ]
 
+student_lesson_requests_patterns = [
+    path("", student.lesson_requests, name="student/lesson-requests"),
+    path("view/<int:lesson_request_id>", shared.view_lesson_request, name="student/lesson-requests/view"),
+    path("edit/<pk>", shared.LessonRequestUpdateView.as_view(), name="student/lesson-requests/edit"),
+    path("delete/<pk>", shared.LessonRequestDeleteView.as_view(), name="student/lesson-requests/delete"),
+    path("view-lessons/<int:lesson_request_id>", student.view_lessons, name="student/lesson-requests/view-lessons"),
+]
+
 student_patterns = [
     path("booked-lessons", old_views.student_booked_lessons, name="student/booked-lessons"),
-    path("lesson-requests", student.lesson_requests, name="student/lesson-requests"),
-    path("lesson-requests/view/<int:lesson_request_id>",
-         shared.view_lesson_request,
-         name="student/lesson-requests/view"),
-    path("lesson-requests/edit/<pk>", shared.LessonRequestUpdateView.as_view(), name="student/lesson-requests/edit"),
-    path("lesson-requests/delete/<pk>", shared.LessonRequestDeleteView.as_view(),
-         name="student/lesson-requests/delete"),
+    path("lesson-requests/", include(student_lesson_requests_patterns)),
     #path("lesson-requests", views.student_lesson_requests, name="student/lesson_requests"),
     #path("delete-lesson-request/<int:id>", views.student_delete_lesson_requests, name="student/delete_lesson_request"),
     #path("edit-lesson-request/<int:id>", views.student_edit_lesson_requests, name="student/edit_lesson_request"),

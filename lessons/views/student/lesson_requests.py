@@ -33,6 +33,7 @@ def lesson_requests(request):
         lesson_interval = f"{lesson_request.lesson_interval_in_days} days"
 
         view_url = reverse('student/lesson-requests/view', kwargs={"lesson_request_id": lesson_request.pk})
+        lessons_url = reverse('student/lesson-requests/view-lessons', kwargs={"lesson_request_id": lesson_request.pk})
         edit_url = reverse('student/lesson-requests/edit', kwargs={"pk": lesson_request.pk})
         delete_url = reverse('student/lesson-requests/delete', kwargs={"pk": lesson_request.pk})
 
@@ -42,7 +43,9 @@ def lesson_requests(request):
             "type": "outline-primary",
         }]
 
-        if not lesson_request.is_fulfilled:
+        if lesson_request.is_fulfilled:
+            buttons.append({"name": "Lessons", "url": lessons_url, "type": "outline-primary"})
+        else:
             buttons.append({
                 "name": "Edit",
                 "url": edit_url,
