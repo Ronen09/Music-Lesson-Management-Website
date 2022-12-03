@@ -40,7 +40,7 @@ student_lesson_requests_patterns = [
 ]
 
 student_patterns = [
-    path("booked-lessons", old_views.student_booked_lessons, name="student/booked-lessons"),
+    path("booked-lessons", student.booked_lessons, name="student/booked-lessons"),
     path("lesson-requests/", include(student_lesson_requests_patterns)),
     #path("lesson-requests", views.student_lesson_requests, name="student/lesson_requests"),
     #path("delete-lesson-request/<int:id>", views.student_delete_lesson_requests, name="student/delete_lesson_request"),
