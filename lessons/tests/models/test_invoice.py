@@ -5,7 +5,7 @@ from lessons.models import Invoice
 
 
 class TestInvoice(TestCase):
-    fixtures = ["lessons/tests/fixtures/invoice-fixture.json"]
+    fixtures = ["lessons/tests/fixtures/invoice.json"]
 
     def setUp(self):
         self.invoice = Invoice.objects.get(pk=5)
