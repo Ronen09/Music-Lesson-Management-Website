@@ -8,7 +8,7 @@ class TestInvoice(TestCase):
     fixtures = ["lessons/tests/fixtures/invoice.json"]
 
     def setUp(self):
-        self.invoice = Invoice.objects.get(pk=5)
+        self.invoice = Invoice.objects.get(pk=1)
 
     def test_valid_invoice(self):
         self._assert_invoice_is_valid()

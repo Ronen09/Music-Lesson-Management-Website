@@ -1,7 +1,7 @@
 [
   {
     "model": "lessons.invoice",
-    "pk": 5,
+    "pk": 1,
     "fields": {
       "lesson_request": 15,
       "user": 12
