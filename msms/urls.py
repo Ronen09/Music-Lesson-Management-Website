@@ -87,4 +87,7 @@ urlpatterns = [
     path("director/manage-administrators",
          views.director_manage_administrators,
          name="director/manage-administrators"),
+    path("director/manage-administrators/create-administrator",
+         views.director_create_administrator,
+         name="director/manage-administrators/create-administrator"),
 ]

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 
-from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm, LessonEditForm, LessonRequestEditForm
+from lessons.forms import SignUpForm, LogInForm, LessonRequestForm, LessonRequestsFilterForm, LessonEditForm, LessonRequestEditForm, AdministratorCreationForm
 from lessons.models import LessonRequest, Lesson
 from lessons.helpers import get_lesson_price
 
@@ -387,6 +387,23 @@ def director_manage_administrators(request):
                 "subheading": "View and manage administrator accounts"
             }
         })
+
+def director_create_administrator(request):
+    if request.method == "POST":
+        form = AdministratorCreationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            return redirect("director")
+
+    else:
+        form = AdministratorCreationForm()
+
+    return render(request, "director/manage_administrator/create_administrator.html", {
+        "form": form,
+        "allowed_roles": ["Director"]
+    })
 
 """ Views for deleting objects. """
 
