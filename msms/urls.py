@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from lessons import old_views
-from lessons.views import administrator, shared, student
+from lessons.views import administrator, shared, student, director
 
 main_patterns = [
     path("", old_views.home, name="home"),
@@ -79,7 +79,7 @@ administrator_patterns = [
 director_patterns = [
     path("lesson-requests", old_views.director_lesson_requests, name="director/lesson-requests"),
     path("student-balances", old_views.director_student_balances, name="director/student-balances"),
-    path("manage-administrators", old_views.director_manage_administrators, name="director/manage-administrators"),
+    path("manage-administrators", director.administrator_list, name="director/manage-administrators"),
     path("manage-administrators/create-administrator", old_views.director_create_administrator, name="director/manage-administrators/create-administrator"),
 ]
 
