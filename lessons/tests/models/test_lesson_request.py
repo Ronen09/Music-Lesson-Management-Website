@@ -1,27 +1,18 @@
 # test further information can be empty string
 
-from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.test import TestCase
 
 from lessons.models import LessonRequest, User
 
 
 class TestLessonRequest(TestCase):
+    fixtures_path = "lessons/tests/fixtures"
+    fixtures = [f"{fixtures_path}/user_john.json", f"{fixtures_path}/lesson_request.json"]
+
     def setUp(self):
-        self.user = User.objects.create_user(
-            "john.doe@example.org",
-            "Password123",
-            first_name="John",
-            last_name="Doe",
-            role="Student",
-        )
-        self.lesson_request = LessonRequest.objects.create(
-            no_of_lessons=5,
-            lesson_interval_in_days=7,
-            lesson_duration_in_mins=30,
-            further_information="I would prefer teacher X.",
-            user=self.user,
-        )
+        self.user = User.objects.get(first_name="John")
+        self.lesson_request = LessonRequest.objects.get(user=self.user)
 
     def test_valid_lesson_request(self):
         self._assert_lesson_request_is_valid()
@@ -40,6 +31,9 @@ class TestLessonRequest(TestCase):
 
     def test_is_available_on_friday_is_true_by_default(self):
         self.assertTrue(self.lesson_request.is_available_on_friday)
+
+    def test_is_fulfilled_is_false_by_default(self):
+        self.assertFalse(self.lesson_request.is_fulfilled)
 
     def test_no_of_lessons_cannot_be_blank(self):
         self.lesson_request.no_of_lessons = None

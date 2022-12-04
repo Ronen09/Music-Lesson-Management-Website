@@ -1,9 +1,9 @@
-from django.core.management.base import BaseCommand, CommandError
-
-from lessons.models import User, Term, LessonRequest, Teacher, Lesson
-
 from datetime import datetime
+
+from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
+
+from lessons.models import Invoice, Lesson, LessonRequest, Teacher, Term, User
 
 
 class Command(BaseCommand):
@@ -66,8 +66,7 @@ class Command(BaseCommand):
 
     def add_lesson_requests(self):
         # Get John Doe (student)
-        john_doe_user = User.objects.filter(
-            email="john.doe@example.org").first()
+        john_doe_user = User.objects.filter(email="john.doe@example.org").first()
 
         lesson_requests = [{
             "is_available_on_monday": True,
@@ -94,9 +93,20 @@ class Command(BaseCommand):
         }]
 
         for lesson_request in lesson_requests:
-            if LessonRequest.objects.filter(
-                    **lesson_request).exists() == False:
+            if LessonRequest.objects.filter(**lesson_request).exists() == False:
                 LessonRequest.objects.create(**lesson_request)
+
+    def add_invoices(self):
+        john_doe_user = User.objects.filter(email="john.doe@example.org").first()
+        lesson_request = LessonRequest.objects.filter(user=john_doe_user, is_fulfilled=True).first()
+
+        invoice = {
+            "lesson_request": lesson_request,
+            "user": john_doe_user,
+        }
+
+        if Invoice.objects.filter(**invoice).exists() == False:
+            Invoice.objects.create(**invoice)
 
     def add_teachers(self):
         teachers = [{
@@ -115,18 +125,29 @@ class Command(BaseCommand):
                 Teacher.objects.create(**teacher)
 
     def add_lessons(self):
-        john_doe_user = User.objects.filter(
-            email="john.doe@example.org").first()
-        john_doe_lesson_request = LessonRequest.objects.filter(
-            user=john_doe_user).first()
-        rebecca_smith_teacher = Teacher.objects.filter(
-            first_name="Rebecca", last_name="Smith").first()
+        john_doe_user = User.objects.filter(email="john.doe@example.org").first()
+        john_doe_lesson_request = LessonRequest.objects.filter(user=john_doe_user, is_fulfilled=True).first()
+        rebecca_smith_teacher = Teacher.objects.filter(first_name="Rebecca", last_name="Smith").first()
 
         lessons = [{
             "teacher": rebecca_smith_teacher,
             "datetime": datetime(2023, 5, 2, 13, 0, tzinfo=timezone.utc),
             "duration": 45,
             "further_information": "I want to learn piano.",
+            "user": john_doe_user,
+            "lesson_request": john_doe_lesson_request,
+        }, {
+            "teacher": rebecca_smith_teacher,
+            "datetime": datetime(2023, 5, 14, 13, 0, tzinfo=timezone.utc),
+            "duration": 30,
+            "further_information": "I want to learn the flute.",
+            "user": john_doe_user,
+            "lesson_request": john_doe_lesson_request,
+        }, {
+            "teacher": rebecca_smith_teacher,
+            "datetime": datetime(2023, 5, 23, 13, 0, tzinfo=timezone.utc),
+            "duration": 60,
+            "further_information": "I want to learn more piano.",
             "user": john_doe_user,
             "lesson_request": john_doe_lesson_request,
         }]
@@ -138,12 +159,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("Seeding initial data...")
 
-        #try:
-        self.add_users()
-        self.add_terms()
-        self.add_lesson_requests()
-        self.add_teachers()
-        self.add_lessons()
-        print("Data was seeded.")
-        #except:
-        #    raise CommandError("Unable to seed initial data.")
+        try:
+            self.add_users()
+            self.add_terms()
+            self.add_lesson_requests()
+            self.add_invoices()
+            self.add_teachers()
+            self.add_lessons()
+            print("Data was seeded.")
+        except:
+            raise CommandError("Unable to seed initial data.")

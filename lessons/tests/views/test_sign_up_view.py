@@ -8,6 +8,7 @@ from lessons.tests.helpers import Helper
 
 
 class SignUpViewTestCase(TestCase, Helper):
+
     def setUp(self):
         self.url = reverse("sign_up")
         self.form_input = {
@@ -59,12 +60,10 @@ class SignUpViewTestCase(TestCase, Helper):
 
         self.assertEqual(after_user_count, before_user_count + 1)
 
-        response_url = reverse("home")
+        response_url = reverse("student")
 
-        self.assertRedirects(
-            response, response_url, status_code=302, target_status_code=200
-        )
-        self.assertTemplateUsed(response, "home.html")
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, "user_dashboard.html")
 
         user = User.objects.get(email="janedoe@example.org")
 

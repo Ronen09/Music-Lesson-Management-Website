@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from lessons.models import User, Term, LessonRequest, Teacher, Lesson
+from lessons.models import Invoice, Lesson, LessonRequest, Teacher, Term, User
 
 
 class Command(BaseCommand):
@@ -12,6 +12,7 @@ class Command(BaseCommand):
             User.objects.filter(is_superuser=False).delete()
             Term.objects.all().delete()
             LessonRequest.objects.all().delete()
+            Invoice.objects.all().delete()
             Teacher.objects.all().delete()
             Lesson.objects.all().delete()
         except:
