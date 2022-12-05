@@ -167,6 +167,9 @@ class Command(BaseCommand):
         lesson_requests = []
 
         for user in User.objects.filter(role="Student"):
+            # Either have nothing for further information or a 5-word sentence.
+            further_information = random.choice([None, self.faker.sentence(nb_words=5)])
+
             lesson_requests.append({
                 "is_available_on_monday": self.random_boolean(),
                 "is_available_on_tuesday": self.random_boolean(),
@@ -176,7 +179,7 @@ class Command(BaseCommand):
                 "no_of_lessons": random.randint(1, 10),
                 "lesson_interval_in_days": random.choice([7, 14]),
                 "lesson_duration_in_mins": random.choice([30, 45, 60]),
-                "further_information": random.choice(["", self.faker.sentence()]),  # Nothing or a random sentence
+                "further_information": further_information,
                 "user": user,
                 "is_fulfilled": False,
             })
@@ -193,9 +196,14 @@ class Command(BaseCommand):
         for _ in range(lesson_request.no_of_lessons):
             new_date = self.faker.date_between(date(day=1, month=9, year=2022), date(day=21, month=7, year=2023))
 
+            hour = random.randint(9, 17)
+            minute = random.choice([0, 15, 30, 45])
+
+            new_datetime = datetime(new_date.year, new_date.month, new_date.day, hour, minute, tzinfo=timezone.utc)
+
             lessons.append({
                 "teacher": random.choice(Teacher.objects.all()),
-                "datetime": datetime(new_date.year, new_date.month, new_date.day, tzinfo=timezone.utc),
+                "datetime": new_datetime,
                 "duration": lesson_request.lesson_duration_in_mins,
                 "further_information": lesson_request.further_information,
                 "user": lesson_request.user,
