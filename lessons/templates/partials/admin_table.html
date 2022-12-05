@@ -6,6 +6,13 @@
 					<div class="col">
 						<p><strong>{{ card.heading }}</strong></p>
 					</div>
+					<div class="col-auto">
+						<div class="row gap-3 m-1">
+							{% for button in card.buttons %}
+								<a class="btn btn-{{ button.type }} col" href="{{ button.url }}">{{ button.name }}</a>
+							{% endfor %}
+						</div>
+					</div>
 				</div>
 				<div class="row">
 					{% for info in card.info %}

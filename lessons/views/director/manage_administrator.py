@@ -16,28 +16,31 @@ def administrator_list(request):
 
     def convert_administrators_to_card(administrator):
         heading = administrator.email
-        first_name = administrator.first_name
-        last_name = administrator.last_name
+        firstname = administrator.first_name
+        lastname = administrator.last_name
+
+        edit_url = reverse('director/manage-administrators/edit', kwargs={"pk": administrator.pk})
+        delete_url = reverse('director/manage-administrators/delete', kwargs={"pk": administrator.pk})
 
         return {
             "heading":
                 heading,
             "info": [{
                 "title": "First Name",
-                "description": first_name,
+                "description": firstname,
             }, {
                 "title": "Last Name",
-                "description": last_name,
+                "description": lastname,
             }],
-#            "buttons": [{
-#                "name": "Edit",
-#                "url": edit_url,
-#                "type": "outline-primary",
-#            }, {
-#                "name": "Delete",
-#                "url": delete_url,
-#                "type": "outline-danger",
-#            }],
+            "buttons": [{
+                "name": "Edit",
+                "url": edit_url,
+                "type": "outline-primary",
+            }, {
+                "name": "Delete",
+                "url": delete_url,
+                "type": "outline-danger",
+            }],
         }
 
     cards = map(convert_administrators_to_card, administrators)
