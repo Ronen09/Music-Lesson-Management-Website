@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from lessons.models import Invoice, Lesson, LessonRequest, Teacher, Term, User
+from lessons.models import (Invoice, Lesson, LessonRequest, Payment, Teacher, Term, User)
 
 
 class Command(BaseCommand):
@@ -15,6 +15,7 @@ class Command(BaseCommand):
             Invoice.objects.all().delete()
             Teacher.objects.all().delete()
             Lesson.objects.all().delete()
+            Payment.objects.all().delete()
         except:
             raise CommandError("Unable to unseed initial data.")
 
