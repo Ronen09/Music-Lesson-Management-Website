@@ -224,8 +224,9 @@ def administrator_lesson_requests_book_finalise_booking(request, lesson_request_
     lesson_request.is_fulfilled = True
     lesson_request.save()
 
-    invoice = Invoice.objects.create(lesson_request=lesson_request, user=lesson_request.user)
-    invoice.save()
+    if Invoice.objects.filter(lesson_request=lesson_request, user=lesson_request.user).exists() == False:
+        invoice = Invoice.objects.create(lesson_request=lesson_request, user=lesson_request.user)
+        invoice.save()
 
     return redirect(f"/administrator/lesson-requests")
 
