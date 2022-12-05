@@ -13,6 +13,9 @@ from lessons.models import Invoice, LessonRequest, Teacher, User
 class Command(BaseCommand):
     """Seed the database with the initial data."""
 
+    # NOTE: Using the SHA with `create` makes the command a lot faster than using the plaintext with `create_user`.
+    DEFAULT_PASSWORD_SHA = "pbkdf2_sha256$390000$Z9f11UhWReNZAE3Qs9gXoP$DbIx8EkwJi0ER4wtLQyAuRTTzAv9tExXNh5PZxsJZ78="
+
     def __init__(self):
         """Setup Faker and Python's random number generator.
         
@@ -103,7 +106,7 @@ class Command(BaseCommand):
 
         students = [{
             "email": "john.doe@example.org",
-            "password": "Password123",
+            "password": self.DEFAULT_PASSWORD_SHA,
             "first_name": "John",
             "last_name": "Doe",
             "role": "Student",
@@ -112,13 +115,14 @@ class Command(BaseCommand):
         for _ in range(number - 1):
             students.append({
                 "email": self.faker.email(),
-                "password": "Password123",  # Reuse the same password because we have no way of knowing a random one
+                "password":
+                    self.DEFAULT_PASSWORD_SHA,  # Reuse the same password because we have no way of knowing a random one
                 "first_name": self.faker.first_name(),
                 "last_name": self.faker.last_name(),
                 "role": "Student",
             })
 
-        self.add_objects_to_database("User", students)
+        self.add_objects_to_database("User", students, exceptions=["password"])
 
     def create_administrators(self):
         """Create the administrator account described in the brief along with
@@ -126,29 +130,31 @@ class Command(BaseCommand):
         """
         administrators = [{
             "email": "petra.pickles@example.org",
-            "password": "Password123",
+            "password": self.DEFAULT_PASSWORD_SHA,
             "first_name": "Petra",
             "last_name": "Pickles",
             "role": "Administrator",
         }, {
             "email": "orville.still@example.org",
-            "password": "Password123",
+            "password": self.DEFAULT_PASSWORD_SHA,
             "first_name": "Orville",
             "last_name": "Still",
             "role": "Administrator",
         }]
 
-        self.add_objects_to_database("User", administrators)
+        self.add_objects_to_database("User", administrators, exceptions=["password"])
 
     def create_director(self):
         """Create the director account described in the brief."""
-        self.add_objects_to_database("User", [{
+        directors = [{
             "email": "marty.major@example.org",
-            "password": "Password123",
+            "password": self.DEFAULT_PASSWORD_SHA,
             "first_name": "Marty",
             "last_name": "Major",
             "role": "Director",
-        }])
+        }]
+
+        self.add_objects_to_database("User", directors, exceptions=["password"])
 
     def random_boolean(self):
         """Return a random Boolean."""
