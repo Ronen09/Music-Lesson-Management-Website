@@ -1,15 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse
 
-from lessons.forms.administrator import LessonRequestsFilterForm
 from lessons.models import User, UserManager
 
 def administrator_list(request):
-    # Get form
-    if request.method == "POST":
-        form = LessonRequestsFilterForm(request.POST)
-    else:
-        form = LessonRequestsFilterForm()
 
     # Generate correct list of requests to show
     administrators = User.objects.filter(role="Administrator")

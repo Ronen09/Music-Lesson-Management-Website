@@ -1,12 +1,12 @@
 from django.views.generic.edit import DeleteView
 
-from lessons.models import UserManager, User
+from lessons.models import User
 
 class AdminDeleteView(DeleteView):
     model = User
     template_name = "delete.html"
     extra_context = {
-        "allowed_roles": ["Director"],
+        "allowed_roles": ["Director", "Administrator"],
         "dashboard": {
             "heading": "Delete this administrator account",
             "subheading": "Confirm deletion of this administrator account."

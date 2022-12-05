@@ -1,6 +1,6 @@
 from django.views.generic.edit import UpdateView
 
-from lessons.models import UserManager, User
+from lessons.models import User
 from lessons.forms.director import AdminEditForm
 
 
@@ -9,7 +9,7 @@ class AdminUpdateView(UpdateView):
     form_class = AdminEditForm
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Director"],
+        "allowed_roles": ["Administrator", "Director"],
         "dashboard": {
             "heading": "Modify this administrator account",
             "subheading": "Change details about this administrator account."
