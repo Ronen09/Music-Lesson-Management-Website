@@ -9,7 +9,7 @@ class AdminUpdateView(UpdateView):
     form_class = AdminEditForm
     template_name = "edit.html"
     extra_context = {
-        "allowed_roles": ["Anonymous"],
+        "allowed_roles": ["Director"],
         "dashboard": {
             "heading": "Modify this administrator account",
             "subheading": "Change details about this administrator account."
