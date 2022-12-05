@@ -5,10 +5,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestEditForm, LessonRequestForm,
-                           LessonRequestsFilterForm, LogInForm, SignUpForm)
+from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestForm, LogInForm, SignUpForm)
 from lessons.helpers import get_lesson_price
-from lessons.models import Lesson, LessonRequest
+from lessons.models import Invoice, Lesson, LessonRequest
 
 # Create your views here.
 
@@ -114,10 +113,6 @@ Subpages for students.
 """
 
 
-def student_booked_lessons(request):
-    return HttpResponse("Page does not exist yet.")
-
-
 def student_lesson_requests(request):
     if request.user.is_authenticated:
         if (LessonRequest.objects.filter(user_id=request.user.id).exists()):
@@ -162,100 +157,6 @@ Subpages for administrators.
 """
 
 
-def administrator_lesson_requests(request):
-    # Get form
-    if request.method == "POST":
-        form = LessonRequestsFilterForm(request.POST)
-    else:
-        form = LessonRequestsFilterForm()
-
-    # Generate correct list of requests to show
-    lesson_requests = LessonRequest.objects.all()
-
-    selected_student = form["student_filter"].value()
-    selected_term = form["term_filter"].value()
-    selected_status = form["status_filter"].value()
-
-    if selected_student not in [None, ""]:
-        lesson_requests = lesson_requests.filter(user=selected_student)
-
-    if selected_status not in [None, "", "all"]:
-        if selected_status == "fulfilled":
-            lesson_requests = lesson_requests.filter(is_fulfilled=True)
-        else:
-            lesson_requests = lesson_requests.filter(is_fulfilled=False)
-
-    def convert_lesson_request_to_card(lesson_request):
-        heading = lesson_request.user
-        no_of_lessons = str(lesson_request.no_of_lessons)
-        lesson_duration = f"{lesson_request.lesson_duration_in_mins} minutes"
-        lesson_interval = f"{lesson_request.lesson_interval_in_days} days"
-
-        book_url = reverse('administrator/lesson-requests/book', kwargs={"lesson_request_id": lesson_request.pk})
-        view_url = reverse('administrator/lesson-requests/view', kwargs={"lesson_request_id": lesson_request.pk})
-        edit_url = reverse('administrator/lesson-requests/edit', kwargs={"pk": lesson_request.pk})
-        delete_url = reverse('administrator/lesson-requests/delete', kwargs={"pk": lesson_request.pk})
-
-        return {
-            "heading":
-                heading,
-            "info": [{
-                "title": "Number of Lessons",
-                "description": no_of_lessons,
-            }, {
-                "title": "Lesson Duration",
-                "description": lesson_duration,
-            }, {
-                "title": "Interval Between Lessons",
-                "description": lesson_interval,
-            }],
-            "buttons": [{
-                "name": "View",
-                "url": view_url,
-                "type": "outline-primary",
-            }, {
-                "name": "Book",
-                "url": book_url,
-                "type": "outline-primary",
-            }, {
-                "name": "Edit",
-                "url": edit_url,
-                "type": "outline-primary",
-            }, {
-                "name": "Delete",
-                "url": delete_url,
-                "type": "outline-danger",
-            }],
-        }
-
-    cards = map(convert_lesson_request_to_card, lesson_requests)
-
-    # Return page
-    return render(
-        request, "administrator/lesson_requests.html", {
-            "allowed_roles": ["Administrator", "Director"],
-            "lesson_requests": lesson_requests,
-            "form": form,
-            "dashboard": {
-                "heading": "Lesson Requests",
-                "subheading": "Fulfill and delete student lesson requests."
-            },
-            "cards": cards
-        })
-
-
-def administrator_lesson_requests_view(request, lesson_request_id):
-    return render(
-        request, "administrator/lesson_requests/view.html", {
-            "allowed_roles": ["Administrator", "Director"],
-            "dashboard": {
-                "heading": f"View Lesson Request #{lesson_request_id}",
-                "subheading": "See more details about this lesson request."
-            },
-            "lesson_request": LessonRequest.objects.get(pk=lesson_request_id),
-        })
-
-
 def administrator_lesson_requests_book(request, lesson_request_id):
     lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
 
@@ -293,7 +194,7 @@ def administrator_lesson_requests_book(request, lesson_request_id):
                 "description": lesson.further_information,
             }, {
                 "title": "Price",
-                "description": get_lesson_price(lesson.duration),
+                "description": get_lesson_price(lesson),
             }],
             "buttons": [{
                 "name": "Edit",
@@ -322,6 +223,9 @@ def administrator_lesson_requests_book_finalise_booking(request, lesson_request_
     lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
     lesson_request.is_fulfilled = True
     lesson_request.save()
+
+    invoice = Invoice.objects.create(lesson_request=lesson_request, user=lesson_request.user)
+    invoice.save()
 
     return redirect(f"/administrator/lesson-requests")
 
@@ -369,19 +273,6 @@ def director_manage_administrators(request):
 
 
 """ Views for deleting objects. """
-
-
-class AdministratorLessonRequestDeleteView(DeleteView):
-    model = LessonRequest
-    success_url = "/administrator/lesson-requests"
-    template_name = "delete.html"
-    extra_context = {
-        "allowed_roles": ["Administrator", "Director"],
-        "dashboard": {
-            "heading": "Delete lesson request",
-            "subheading": "Confirm deletion of lesson request."
-        }
-    }
 
 
 class AdministratorLessonDeleteView(DeleteView):
@@ -438,17 +329,3 @@ class AdministratorLessonCreateView(CreateView):
         initial["lesson_request"] = lesson_request.pk
         initial["user"] = lesson_request.user.pk
         return initial
-
-
-class AdministratorLessonRequestUpdateView(UpdateView):
-    model = LessonRequest
-    form_class = LessonRequestEditForm
-    success_url = "/administrator/lesson-requests"
-    template_name = "edit.html"
-    extra_context = {
-        "allowed_roles": ["Administrator", "Director"],
-        "dashboard": {
-            "heading": "Modify lesson request",
-            "subheading": "Change details about this lesson request."
-        }
-    }
