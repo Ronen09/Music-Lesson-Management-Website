@@ -24,11 +24,6 @@
 								Invoices
 							</a>
 						</li>
-						<li class="list-group-item">
-							<a href = "{% url 'student/transactions' %}">
-								Transactions
-							</a>
-						</li>
 					{% elif user.role == "Administrator" %}
 						<li class="list-group-item">
 							<a href = "{% url 'administrator/lesson-requests' %}">

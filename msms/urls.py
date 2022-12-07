@@ -43,7 +43,6 @@ student_patterns = [
     path("booked-lessons", student.booked_lessons, name="student/booked-lessons"),
     path("lesson-requests/", include(student_lesson_requests_patterns)),
     path("invoices/", student.invoices, name="student/invoices"),
-    path("transactions/", old_views.student_transactions, name="student/transactions"),
 ]
 
 administrator_lesson_requests_patterns = [
