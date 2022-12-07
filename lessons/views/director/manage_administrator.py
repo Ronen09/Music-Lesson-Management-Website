@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 
-from lessons.models import User, UserManager
+from lessons.models import User
 
 def administrator_list(request):
 
