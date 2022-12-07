@@ -245,10 +245,6 @@ def administrator_lesson_requests_delete(request, lesson_request_id):
     return redirect("administrator/lesson-requests")
 
 
-def administrator_student_balances(request):
-    return HttpResponse("Page does not exist yet.")
-
-
 """
 Subpages for directors.
 """

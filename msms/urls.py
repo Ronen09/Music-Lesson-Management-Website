@@ -47,33 +47,31 @@ student_patterns = [
     path("transactions/", old_views.student_transactions, name="student/transactions"),
 ]
 
-administrator_patterns = [
-    path("lesson-requests", administrator.lesson_requests, name="administrator/lesson-requests"),
-    path("lesson-requests/view/<int:lesson_request_id>",
-         shared.view_lesson_request,
-         name="administrator/lesson-requests/view"),
-    path("lesson-requests/book/<int:lesson_request_id>",
+administrator_lesson_requests_patterns = [
+    path("", administrator.lesson_requests, name="administrator/lesson-requests"),
+    path("view/<int:lesson_request_id>", shared.view_lesson_request, name="administrator/lesson-requests/view"),
+    path("book/<int:lesson_request_id>",
          old_views.administrator_lesson_requests_book,
          name="administrator/lesson-requests/book"),
-    path("lesson-requests/book/<int:lesson_request_id>/finalise-booking",
+    path("book/<int:lesson_request_id>/finalise-booking",
          old_views.administrator_lesson_requests_book_finalise_booking,
          name="administrator/lesson-requests/book/finalise-booking"),
-    path("lesson-requests/delete/<pk>",
-         shared.LessonRequestDeleteView.as_view(),
-         name="administrator/lesson-requests/delete"),
-    path("lesson-requests/edit/<pk>",
-         shared.LessonRequestUpdateView.as_view(),
-         name="administrator/lesson-requests/edit"),
-    path("lesson-requests/book/<int:lesson_request_id>/lessons/delete/<pk>",
+    path("delete/<pk>", shared.LessonRequestDeleteView.as_view(), name="administrator/lesson-requests/delete"),
+    path("edit/<pk>", shared.LessonRequestUpdateView.as_view(), name="administrator/lesson-requests/edit"),
+    path("book/<int:lesson_request_id>/lessons/delete/<pk>",
          old_views.AdministratorLessonDeleteView.as_view(),
          name="administrator/lesson-requests/book/lessons/delete"),
-    path("lesson-requests/book/<int:lesson_request_id>/lessons/edit/<pk>",
+    path("book/<int:lesson_request_id>/lessons/edit/<pk>",
          old_views.AdministratorLessonUpdateView.as_view(),
          name="administrator/lesson-requests/book/lessons/edit"),
-    path("lesson-requests/book/<int:lesson_request_id>/lessons/create",
+    path("book/<int:lesson_request_id>/lessons/create",
          old_views.AdministratorLessonCreateView.as_view(),
          name="administrator/lesson-requests/book/lessons/create"),
-    path("student-balances", old_views.administrator_student_balances, name="administrator/student-balances"),
+]
+
+administrator_patterns = [
+    path("lesson-requests/", include(administrator_lesson_requests_patterns)),
+    path("student-balances", administrator.student_balances, name="administrator/student-balances"),
 ]
 
 director_patterns = [
