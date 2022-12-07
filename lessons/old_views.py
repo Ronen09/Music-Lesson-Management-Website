@@ -144,10 +144,6 @@ def student_edit_lesson_requests(request, id):
     return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
 
 
-def student_manage_dependents(request):
-    return HttpResponse("Page does not exist yet.")
-
-
 def student_transactions(request):
     return HttpResponse("Page does not exist yet.")
 
