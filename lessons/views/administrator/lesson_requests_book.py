@@ -3,8 +3,8 @@ from django.urls import reverse
 
 from lessons.models import Lesson, LessonRequest
 
-
-def lesson_requests_book(request, lesson_request_id):
+# Books the lesson request sent by the user
+def lesson_requests_book(request, lesson_request_id): #checks the lesson request id and what the request specifies
     lesson_request = LessonRequest.objects.get(pk=lesson_request_id)
 
     # Get lessons for this lesson request (if they exist)
@@ -26,22 +26,22 @@ def lesson_requests_book(request, lesson_request_id):
                              })
 
         heading = lesson.datetime.strftime("%d %B %Y (%H:%M)")
-
+        # Adds the correct description for the lesson
         cards.append({
             "heading":
                 heading,
             "info": [{
                 "title": "Teacher",
-                "description": lesson.teacher,
+                "description": lesson.teacher, #specific teacher
             }, {
                 "title": "Duration",
-                "description": f"{lesson.duration} minutes",
+                "description": f"{lesson.duration} minutes", #lesson duration
             }, {
                 "title": "Further Information",
-                "description": lesson.further_information,
+                "description": lesson.further_information, #further information
             }, {
                 "title": "Price",
-                "description": get_lesson_price(lesson),
+                "description": get_lesson_price(lesson), #price of lesson
             }],
             "buttons": [{
                 "name": "Edit",
