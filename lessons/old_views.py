@@ -1,10 +1,8 @@
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
+<<<<<<< HEAD
 from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestForm, LogInForm, SignUpForm, AdministratorCreationForm)
 from lessons.helpers import get_lesson_price
 from lessons.models import Invoice, Lesson, LessonRequest
@@ -248,6 +246,10 @@ def administrator_student_balances(request):
     return HttpResponse("Page does not exist yet.")
 
 
+=======
+from lessons.forms import LessonCreateForm, LessonEditForm
+from lessons.models import Lesson, LessonRequest
+>>>>>>> main
 """
 Subpages for directors.
 """
@@ -264,9 +266,12 @@ def director_lesson_requests(request):
         })
 
 
+<<<<<<< HEAD
 def director_student_balances(request):
     return HttpResponse("Page does not exist yet.")
 
+=======
+>>>>>>> main
 def director_manage_administrators(request):
     return render(
         request, "director/manage_administrators.html", {

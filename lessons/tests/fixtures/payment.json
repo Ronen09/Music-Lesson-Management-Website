@@ -1,0 +1,11 @@
+[
+  {
+    "model": "lessons.Payment",
+    "pk": 1,
+    "fields": {
+      "user": 12,
+      "invoice": 1,
+      "amount_paid": 50
+    }
+  }
+]
