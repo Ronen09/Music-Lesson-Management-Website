@@ -5,7 +5,7 @@ from lessons.forms.administrator.transaction_filter_form import \
 from lessons.helpers import get_balance_for_student, get_invoice_amount
 from lessons.models import Invoice, Payment, User
 
-
+# Generate the cards for the balance transaction, creating a list of balances for each student
 def generate_cards_for_balances_transaction_type(student):
     # Generate list of balances for each student
     balances = []
@@ -34,9 +34,8 @@ def generate_cards_for_balances_transaction_type(student):
 
     return map(convert_balance_to_card, balances)
 
-
+# Generates the cards for the invoice transactions, creating a list of invoices for each student.
 def generate_cards_for_invoices_transaction_type(student):
-    # Generate list of invoices for each student
     invoices = []
 
     if student == "all":
@@ -60,12 +59,11 @@ def generate_cards_for_invoices_transaction_type(student):
 
     return map(convert_invoice_to_card, invoices)
 
-
+# Generate card for payment transaction, createing a list of payments for each student.
 def generate_cards_for_payments_transaction_type(student):
-    # Generate list of payments for each student
     payments = []
 
-    if student == "all":
+    if student == "all":    # Creating a filter for the students
         payments = Payment.objects.all()
     else:
         payments = Payment.objects.filter(user=student)
@@ -86,7 +84,7 @@ def generate_cards_for_payments_transaction_type(student):
 
     return map(convert_payment_to_card, payments)
 
-
+# Generates the card for the transaction
 def generate_cards_for_transaction_type(student, transaction_type):
     if transaction_type == "balances":
         return generate_cards_for_balances_transaction_type(student)
@@ -95,9 +93,8 @@ def generate_cards_for_transaction_type(student, transaction_type):
     elif transaction_type == "payments":
         return generate_cards_for_payments_transaction_type(student)
 
-
+# Gets the form for the student balance
 def student_balances(request):
-    # Get form
     if request.method == "POST":
         form = TransactionFilterForm(request.POST)
     else:

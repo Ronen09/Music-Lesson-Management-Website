@@ -53,8 +53,4 @@ The packages used by this application are specified in `requirements.txt`
 - Some source code taken from the Clucker project.
 - Some illustrations taken from [Storyset](https://storyset.com).
     - [Illustration used for log in and sign up pages](https://storyset.com/illustration/connected-world/amico)
-- Image link for background 
-    - https://www.pinterest.co.uk/pin/851672979510526771/
-- Some source code from the following websites
-    - https://getcssscan.com/css-buttons-examples
-    - https://www.w3schools.com/Css/
+    - [Illustration used for welcome page](https://www.onlinelogomaker.com/blog/6-things-can-learn-iconic-music-logo-design/)

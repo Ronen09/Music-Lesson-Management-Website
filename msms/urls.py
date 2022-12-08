@@ -55,13 +55,13 @@ administrator_lesson_requests_patterns = [
     path("delete/<pk>", shared.LessonRequestDeleteView.as_view(), name="administrator/lesson-requests/delete"),
     path("edit/<pk>", shared.LessonRequestUpdateView.as_view(), name="administrator/lesson-requests/edit"),
     path("book/<int:lesson_request_id>/lessons/delete/<pk>",
-         old_views.AdministratorLessonDeleteView.as_view(),
+         administrator.LessonDeleteView.as_view(),
          name="administrator/lesson-requests/book/lessons/delete"),
     path("book/<int:lesson_request_id>/lessons/edit/<pk>",
-         old_views.AdministratorLessonUpdateView.as_view(),
+         administrator.LessonUpdateView.as_view(),
          name="administrator/lesson-requests/book/lessons/edit"),
     path("book/<int:lesson_request_id>/lessons/create",
-         old_views.AdministratorLessonCreateView.as_view(),
+         administrator.LessonCreateView.as_view(),
          name="administrator/lesson-requests/book/lessons/create"),
 ]
 
@@ -71,10 +71,10 @@ administrator_patterns = [
 ]
 
 director_patterns = [
-    path("lesson-requests", old_views.director_lesson_requests, name="director/lesson-requests"),
-    #path("student-balances", old_views.director_student_balances, name="director/student-balances"),
+    path("lesson-requests", administrator.lesson_requests, name="director/lesson-requests"),
+    path("student-balances", administrator.student_balances, name="director/student-balances"),
     path("manage-administrators", director.administrator_list, name="director/manage-administrators"),
-    path("manage-administrators/create-administrator", old_views.director_create_administrator, name="director/manage-administrators/create-administrator"),
+    path("manage-administrators/create-administrator", director.director_create_administrator, name="director/manage-administrators/create-administrator"),
     path("manage-administrators/edit/<pk>", director.AdminUpdateView.as_view(), name="director/manage-administrators/edit"),
     path("manage-administrators/delete/<pk>", director.AdminDeleteView.as_view(), name="director/manage-administrators/delete"),
 ]
