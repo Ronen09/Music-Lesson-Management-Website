@@ -97,7 +97,7 @@ User dashboards for each type of user (student, administrator and director).
 
 
 def student(request):
-    return render(request, "user_dashboard.html", {"allowed_roles": ["Student"]})
+    return redirect("student/lesson-requests")
 
 
 def administrator(request):
@@ -105,7 +105,7 @@ def administrator(request):
 
 
 def director(request):
-    return render(request, "user_dashboard.html", {"allowed_roles": ["Director"]})
+    return redirect("administrator/lesson-requests")
 
 
 """
