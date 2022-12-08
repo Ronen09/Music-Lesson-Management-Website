@@ -1,7 +1,7 @@
 from django.views.generic.edit import UpdateView
 
-from lessons.models import User
 from lessons.forms.director import AdminEditForm
+from lessons.models import User
 
 
 class AdminUpdateView(UpdateView):
@@ -18,3 +18,8 @@ class AdminUpdateView(UpdateView):
 
     def get_success_url(self):
         return f"/director/manage-administrators"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = self.request.user
+        return context
