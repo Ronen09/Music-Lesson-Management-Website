@@ -72,7 +72,7 @@ administrator_patterns = [
 
 director_patterns = [
     path("lesson-requests", old_views.director_lesson_requests, name="director/lesson-requests"),
-    path("student-balances", old_views.director_student_balances, name="director/student-balances"),
+    #path("student-balances", old_views.director_student_balances, name="director/student-balances"),
     path("manage-administrators", director.administrator_list, name="director/manage-administrators"),
     path("manage-administrators/create-administrator", old_views.director_create_administrator, name="director/manage-administrators/create-administrator"),
     path("manage-administrators/edit/<pk>", director.AdminUpdateView.as_view(), name="director/manage-administrators/edit"),
