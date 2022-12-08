@@ -54,7 +54,7 @@ The packages used by this application are specified in `requirements.txt`
 - Some illustrations taken from [Storyset](https://storyset.com).
     - [Illustration used for log in and sign up pages](https://storyset.com/illustration/connected-world/amico)
 -Image link for background 
-    https://www.pinterest.co.uk/pin/851672979510526771/
+    - https://www.pinterest.co.uk/pin/851672979510526771/
 -some source code from the following websites
-    https://getcssscan.com/css-buttons-examples
-    https://www.w3schools.com/Css/
+    - https://getcssscan.com/css-buttons-examples
+    - https://www.w3schools.com/Css/
