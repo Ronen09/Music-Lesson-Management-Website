@@ -1,6 +1,6 @@
 from django.db import models
 
-# Creates and returns first and last name for teachers
+# Creates Teacher class, setting and returning the firt and last name.
 class Teacher(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
