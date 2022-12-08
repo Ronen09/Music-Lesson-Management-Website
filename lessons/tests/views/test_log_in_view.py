@@ -12,8 +12,7 @@ class LogInViewTestCase(TestCase, Helper):
     def setUp(self):
         self.url = reverse("log_in")
 
-        self.user = User.objects.create_user(email="johndoe@example.org",
-                                             password="Password123")
+        self.user = User.objects.create_user(email="johndoe@example.org", password="Password123")
 
     def test_log_in_url(self):
         self.assertEqual(self.url, "/login/")
@@ -34,10 +33,7 @@ class LogInViewTestCase(TestCase, Helper):
         self.assertEqual(len(messages_list), 0)
 
     def test_unsuccessful_log_in(self):
-        form_input = {
-            "email": "johndoe@example.org",
-            "password": "WrongPassword123"
-        }
+        form_input = {"email": "johndoe@example.org", "password": "WrongPassword123"}
 
         response = self.client.post(self.url, form_input)
 
@@ -94,22 +90,16 @@ class LogInViewTestCase(TestCase, Helper):
         self.assertEqual(messages_list[0].level, messages.ERROR)
 
     def test_successful_log_in(self):
-        form_input = {
-            "email": "johndoe@example.org",
-            "password": "Password123"
-        }
+        form_input = {"email": "johndoe@example.org", "password": "Password123"}
 
         response = self.client.post(self.url, form_input, follow=True)
 
         self.assertTrue(self._is_logged_in())
 
-        response_url = reverse("student")
+        response_url = reverse("student/lesson-requests")
 
-        self.assertRedirects(response,
-                             response_url,
-                             status_code=302,
-                             target_status_code=200)
-        self.assertTemplateUsed(response, "user_dashboard.html")
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, "student/lesson_requests.html")
 
         messages_list = list(response.context["messages"])
 
@@ -119,10 +109,7 @@ class LogInViewTestCase(TestCase, Helper):
         self.user.is_active = False
         self.user.save()
 
-        form_input = {
-            "email": "johndoe@example.org",
-            "password": "Password123"
-        }
+        form_input = {"email": "johndoe@example.org", "password": "Password123"}
 
         response = self.client.post(self.url, form_input, follow=True)
 

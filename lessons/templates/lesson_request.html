@@ -1,10 +1,6 @@
-{% extends 'base.html' %}
-{% block title %}
-Lesson request
-{% endblock %}
-{% block body %}
-<h1>Lesson request</h1>
-<form action = "{% url 'lesson_request' %}" method = "post">
+{% extends 'user_dashboard.html' %}
+{% block dashboard_body %}
+<form action = "{{ request.path }}" method = "post">
 	{% csrf_token %}
 	{% include 'partials/form.html' with form=form %}
 

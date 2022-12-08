@@ -118,7 +118,7 @@ def student_balances(request):
 
     return render(
         request, "administrator/student_balances.html", {
-            "allowed_roles": ["Administrator"],
+            "allowed_roles": ["Administrator", "Director"],
             "dashboard": {
                 "heading":
                     "Student Balances",

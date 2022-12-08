@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from lessons import old_views
-from lessons.views import administrator, shared, student
+from lessons.views import administrator, shared, student, director
 
 main_patterns = [
     path("", old_views.home, name="home"),
@@ -28,7 +28,6 @@ main_patterns = [
     path("student/", old_views.student, name="student"),
     path("administrator/", old_views.administrator, name="administrator"),
     path("director/", old_views.director, name="director"),
-    path("lesson_request/", old_views.lesson_request, name="lesson_request"),
 ]
 
 student_lesson_requests_patterns = [
@@ -40,18 +39,21 @@ student_lesson_requests_patterns = [
 ]
 
 student_patterns = [
+    path("lesson_request/", student.lesson_request, name="student/lesson-request"),
     path("booked-lessons", student.booked_lessons, name="student/booked-lessons"),
     path("lesson-requests/", include(student_lesson_requests_patterns)),
     path("invoices/", student.invoices, name="student/invoices"),
 ]
 
-administrator_lesson_requests_patterns = [
-    path("", administrator.lesson_requests, name="administrator/lesson-requests"),
-    path("view/<int:lesson_request_id>", shared.view_lesson_request, name="administrator/lesson-requests/view"),
-    path("book/<int:lesson_request_id>",
+administrator_patterns = [
+    path("lesson-requests", administrator.lesson_requests, name="administrator/lesson-requests"),
+    path("lesson-requests/view/<int:lesson_request_id>",
+         shared.view_lesson_request,
+         name="administrator/lesson-requests/view"),
+    path("lesson-requests/book/<int:lesson_request_id>",
          old_views.administrator_lesson_requests_book,
          name="administrator/lesson-requests/book"),
-    path("book/<int:lesson_request_id>/finalise-booking",
+    path("lesson-requests/book/<int:lesson_request_id>/finalise-booking",
          old_views.administrator_lesson_requests_book_finalise_booking,
          name="administrator/lesson-requests/book/finalise-booking"),
     path("delete/<pk>", shared.LessonRequestDeleteView.as_view(), name="administrator/lesson-requests/delete"),
@@ -65,17 +67,22 @@ administrator_lesson_requests_patterns = [
     path("book/<int:lesson_request_id>/lessons/create",
          old_views.AdministratorLessonCreateView.as_view(),
          name="administrator/lesson-requests/book/lessons/create"),
-]
-
-administrator_patterns = [
-    path("lesson-requests/", include(administrator_lesson_requests_patterns)),
     path("student-balances", administrator.student_balances, name="administrator/student-balances"),
 ]
 
 director_patterns = [
     path("lesson-requests", old_views.director_lesson_requests, name="director/lesson-requests"),
     path("student-balances", old_views.director_student_balances, name="director/student-balances"),
-    path("manage-administrators", old_views.director_manage_administrators, name="director/manage-administrators"),
+    path("manage-administrators", director.administrator_list, name="director/manage-administrators"),
+    path("manage-administrators/create-administrator",
+         old_views.director_create_administrator,
+         name="director/manage-administrators/create-administrator"),
+    path("manage-administrators/edit/<pk>",
+         director.AdminUpdateView.as_view(),
+         name="director/manage-administrators/edit"),
+    path("manage-administrators/delete/<pk>",
+         director.AdminDeleteView.as_view(),
+         name="director/manage-administrators/delete"),
 ]
 
 urlpatterns = [

@@ -1,6 +1,6 @@
 import locale
 
-from lessons.models import Invoice, Lesson, Payment, User
+from lessons.models import Invoice, Lesson, User, Payment
 
 LESSON_PRICE_MULTIPLIER = 1.15
 

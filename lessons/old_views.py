@@ -5,27 +5,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestForm, LogInForm, SignUpForm)
+from lessons.forms import (LessonCreateForm, LessonEditForm, LessonRequestForm, LogInForm, SignUpForm,
+                           AdministratorCreationForm)
 from lessons.helpers import get_lesson_price
 from lessons.models import Invoice, Lesson, LessonRequest
 
 # Create your views here.
-
-
-def lesson_request(request):
-    if request.method == "POST":
-        form = LessonRequestForm(request.POST, current_user=request.user)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect("student")
-    else:
-        form = LessonRequestForm(current_user=request.user)
-
-    return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
-
-
 """
 Main 'site' pages (index page, log in, sign up and log out).
 """
@@ -97,7 +82,7 @@ User dashboards for each type of user (student, administrator and director).
 
 
 def student(request):
-    return render(request, "user_dashboard.html", {"allowed_roles": ["Student"]})
+    return redirect("student/lesson-requests")
 
 
 def administrator(request):
@@ -142,6 +127,14 @@ def student_edit_lesson_requests(request, id):
                 return redirect("student/lesson_requests")
         lesson_request.delete()
     return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
+
+
+def student_manage_dependents(request):
+    return HttpResponse("Page does not exist yet.")
+
+
+def student_transactions(request):
+    return HttpResponse("Page does not exist yet.")
 
 
 """
@@ -216,9 +209,8 @@ def administrator_lesson_requests_book_finalise_booking(request, lesson_request_
     lesson_request.is_fulfilled = True
     lesson_request.save()
 
-    if Invoice.objects.filter(lesson_request=lesson_request, user=lesson_request.user).exists() == False:
-        invoice = Invoice.objects.create(lesson_request=lesson_request, user=lesson_request.user)
-        invoice.save()
+    invoice = Invoice.objects.create(lesson_request=lesson_request, user=lesson_request.user)
+    invoice.save()
 
     return redirect(f"/administrator/lesson-requests")
 
@@ -258,7 +250,32 @@ def director_student_balances(request):
 
 
 def director_manage_administrators(request):
-    return HttpResponse("Page does not exist yet.")
+    return render(
+        request, "director/manage_administrators.html", {
+            "allowed_roles": ["Director"],
+            "dashboard": {
+                "heading": "Administrator Accounts",
+                "subheading": "View and manage administrator accounts"
+            }
+        })
+
+
+def director_create_administrator(request):
+    if request.method == "POST":
+        form = AdministratorCreationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            return redirect("director")
+
+    else:
+        form = AdministratorCreationForm()
+
+    return render(request, "director/manage_administrator/create_administrator.html", {
+        "form": form,
+        "allowed_roles": ["Director"]
+    })
 
 
 """ Views for deleting objects. """
