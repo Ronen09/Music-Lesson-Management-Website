@@ -1,6 +1,6 @@
 from django.db import models
 
-
+#Create Invoices, for the user and for which lesson
 class Invoice(models.Model):
     lesson_request = models.ForeignKey("lessons.LessonRequest", on_delete=models.CASCADE)
     user = models.ForeignKey("lessons.User", on_delete=models.CASCADE)
