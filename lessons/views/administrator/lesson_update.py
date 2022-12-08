@@ -3,7 +3,7 @@ from django.views.generic.edit import UpdateView
 from lessons.forms import LessonEditForm
 from lessons.models import Lesson
 
-
+# Class for updating Lesson View
 class LessonUpdateView(UpdateView):
     model = Lesson
     form_class = LessonEditForm
