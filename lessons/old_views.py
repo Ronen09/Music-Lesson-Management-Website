@@ -23,7 +23,15 @@ def lesson_request(request):
     else:
         form = LessonRequestForm(current_user=request.user)
 
-    return render(request, "lesson_request.html", {"form": form, "allowed_roles": ["Student"]})
+    return render(
+        request, "student/lesson_request.html", {
+            "form": form,
+            "allowed_roles": ["Student"],
+            "dashboard": {
+                "heading": "Make Lesson Request",
+                "subheading": "Request a set of lessons."
+            }
+        })
 
 
 """
@@ -92,43 +100,8 @@ def sign_up(request):
 
 
 """
-User dashboards for each type of user (student, administrator and director).
-"""
-
-
-def student(request):
-    return redirect("student/lesson-requests")
-
-
-def administrator(request):
-    return redirect("administrator/lesson-requests")
-
-
-def director(request):
-    return redirect("administrator/lesson-requests")
-
-
-"""
 Subpages for students.
 """
-
-
-def student_lesson_requests(request):
-    if request.user.is_authenticated:
-        if (LessonRequest.objects.filter(user_id=request.user.id).exists()):
-            lesson = LessonRequest.objects.get(user_id=request.user.id)
-            return render(request, "manage_lesson_requests.html", {'allowed_roles': ["Student"], "lesson": lesson})
-    return render(request, "manage_lesson_requests.html", {'allowed_roles': ['Student']})
-
-
-def student_delete_lesson_requests(request, id):
-    lesson = LessonRequest.objects.get(id=id)
-    if request.user.is_authenticated:
-        if lesson.user_id == request.user.id:
-            lesson.delete()
-        return redirect("student/lesson_requests")
-    else:
-        return redirect("student/lesson_requests")
 
 
 def student_edit_lesson_requests(request, id):
