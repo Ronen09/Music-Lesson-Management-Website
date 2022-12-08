@@ -1,6 +1,6 @@
 import locale
 
-from lessons.models import Invoice, Lesson, Payment, User
+from lessons.models import Invoice, Lesson
 
 LESSON_PRICE_MULTIPLIER = 1.15
 
@@ -21,32 +21,3 @@ def get_invoice_amount(invoice):
 
     locale.setlocale(locale.LC_ALL, 'en_GB')
     return locale.currency(total_amount, grouping=True)
-
-
-def get_balance_for_student(student):
-    assert isinstance(student, User)
-    assert student.role == "Student"
-
-    amount_owed = 0
-    amount_paid = 0
-    difference = 0
-
-    # Calculate amount owed
-    invoices_belonging_to_student = Invoice.objects.filter(user=student)
-
-    for invoice in invoices_belonging_to_student:
-        invoice_amount = float(get_invoice_amount(invoice)[1:])  # Strip £ sign
-
-        amount_owed = amount_owed + invoice_amount
-
-    # Calculate amount paid
-    payments_from_student = Payment.objects.filter(user=student)
-
-    for payment in payments_from_student:
-        amount_paid = amount_paid + float(payment.amount_paid)
-
-    # Return difference
-    difference = amount_owed - amount_paid
-
-    locale.setlocale(locale.LC_ALL, 'en_GB')
-    return locale.currency(difference, grouping=True)

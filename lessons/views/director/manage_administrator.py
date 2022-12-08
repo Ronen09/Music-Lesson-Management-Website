@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from lessons.models import User
-from lessons.forms import AdministratorCreationForm
 
 def administrator_list(request):
 
@@ -50,20 +49,3 @@ def administrator_list(request):
             },
             "cards": cards
         })
-
-def director_create_administrator(request):
-    if request.method == "POST":
-        form = AdministratorCreationForm(request.POST)
-
-        if form.is_valid():
-            user = form.save()
-
-            return redirect("director")
-
-    else:
-        form = AdministratorCreationForm()
-
-    return render(request, "director/manage_administrator/create_administrator.html", {
-        "form": form,
-        "allowed_roles": ["Director"]
-    })
