@@ -1,7 +1,7 @@
 from django.views.generic.edit import UpdateView
 
-from lessons.forms.director import AdminEditForm
 from lessons.models import User
+from lessons.forms.director import AdminEditForm
 
 
 class AdminUpdateView(UpdateView):
