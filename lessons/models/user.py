@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 from lessons.models import UserManager
 
-
+#User class, email for each student must be unique
 class User(AbstractUser):
     email = models.EmailField("Email Address", unique=True)
     USERNAME_FIELD = "email"
@@ -15,6 +15,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
-
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"
