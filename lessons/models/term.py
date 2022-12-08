@@ -1,6 +1,6 @@
 from django.db import models
 
-# Class for terms setting the start and end date
+
 class Term(models.Model):
     # Represents order in year, e.g. is this second term out of the six terms in a year?
     order = models.IntegerField()
@@ -8,7 +8,7 @@ class Term(models.Model):
     end_date = models.DateField()
 
     def __str__(self):
-        date_format = "%d %B %Y"  # Date format, DAY/MONTH/YEAR, eg: "06 January 2023"
+        date_format = "%d %B %Y"  # Like: "06 January 2023"
 
         formatted_start_date = self.start_date.strftime(date_format)
         formatted_end_date = self.end_date.strftime(date_format)

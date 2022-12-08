@@ -3,10 +3,6 @@ from django.contrib.auth.models import AbstractUser
 
 from lessons.models import UserManager
 
-director_role_choices = (
-    ('Administrator', 'Administrator'),
-    ('Director', 'Director'),
-)
 
 class User(AbstractUser):
     email = models.EmailField("Email Address", unique=True)
@@ -14,7 +10,7 @@ class User(AbstractUser):
 
     username = None
 
-    role = models.CharField(default="Student", choices=director_role_choices, max_length=255)
+    role = models.CharField(default="Student", max_length=255)
 
     REQUIRED_FIELDS = []
 
